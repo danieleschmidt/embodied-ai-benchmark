@@ -1,0 +1,131 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "embodied-ai-benchmark"
+version = "1.0.0"
+description = "Extends Habitat and ManiSkill with multi-agent tasks including cooperative furniture assembly and LLM-guided curriculum learning"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Daniel Schmidt"}
+]
+keywords = ["embodied-ai", "robotics", "multi-agent", "benchmark", "simulation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.21.0",
+    "gym>=0.21.0",
+    "torch>=1.11.0",
+    "transformers>=4.20.0",
+    "opencv-python>=4.5.0",
+    "pyyaml>=6.0",
+    "matplotlib>=3.5.0",
+    "tqdm>=4.64.0",
+]
+
+[project.optional-dependencies]
+habitat = [
+    "habitat-sim>=0.3.0",
+    "habitat-lab>=0.3.0",
+]
+maniskill = [
+    "mani-skill>=0.5.0",
+    "sapien>=2.0.0",
+]
+isaac = [
+    "omniverse-kit",
+    "isaac-sim",
+]
+all = [
+    "embodied-ai-benchmark[habitat,maniskill,isaac]",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "flake8>=5.0.0",
+    "mypy>=0.991",
+    "pre-commit>=2.20.0",
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/embodied-ai-benchmark"
+Documentation = "https://embodied-ai-benchmark.readthedocs.io"
+Repository = "https://github.com/yourusername/embodied-ai-benchmark"
+"Bug Tracker" = "https://github.com/yourusername/embodied-ai-benchmark/issues"
+
+[project.scripts]
+eai-benchmark = "embodied_ai_benchmark.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"embodied_ai_benchmark" = ["assets/**/*", "configs/**/*"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = [
+    "--cov=embodied_ai_benchmark",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--strict-markers",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]

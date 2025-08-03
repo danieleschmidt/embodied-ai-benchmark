@@ -1,0 +1,1 @@
+"""Manipulation tasks for object handling and assembly."""

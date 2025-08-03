@@ -76,7 +76,7 @@ Repository = "https://github.com/yourusername/embodied-ai-benchmark"
 "Bug Tracker" = "https://github.com/yourusername/embodied-ai-benchmark/issues"
 
 [project.scripts]
-eai-benchmark = "embodied_ai_benchmark.cli:main"
+eai-benchmark = "embodied_ai_benchmark.cli.main:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

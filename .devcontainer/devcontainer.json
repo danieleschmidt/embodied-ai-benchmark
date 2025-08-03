@@ -1,6 +1,6 @@
 {
   "name": "Embodied AI Benchmark++",
-  "image": "mcr.microsoft.com/devcontainers/python:3.10",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
@@ -36,7 +36,7 @@
   "mounts": [
     "source=${localWorkspaceFolder}/.git,target=/workspaces/embodied-ai-benchmark/.git,type=bind,consistency=cached"
   ],
-  "forwardPorts": [8888, 8080],
+  "forwardPorts": [8888, 8080, 6379, 5432],
   "portsAttributes": {
     "8888": {
       "label": "Jupyter",
@@ -45,6 +45,14 @@
     "8080": {
       "label": "Dashboard",
       "onAutoForward": "openPreview"
+    },
+    "6379": {
+      "label": "Redis",
+      "onAutoForward": "ignore"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "ignore"
     }
   }
 }

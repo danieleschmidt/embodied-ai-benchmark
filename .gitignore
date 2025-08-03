@@ -205,3 +205,23 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Embodied AI Benchmark++ specific
+data/
+models/
+results/
+logs/
+checkpoints/
+*.pkl
+*.pth
+*.onnx
+*.h5
+
+# Simulation assets
+habitat_data/
+maniskill_assets/
+isaac_sim/
+
+# Benchmark results
+benchmark_results/
+evaluation_logs/

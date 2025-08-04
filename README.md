@@ -965,7 +965,7 @@ if profile.inference_time > 100:  # ms
 ```bibtex
 @article{embodied_ai_benchmark_plus,
   title={Embodied-AI Benchmark++: Multi-Agent Tasks and LLM-Guided Curriculum},
-  author={Your Name},
+  author={Daniel Schmidt},
   journal={Conference on Robot Learning},
   year={2025}
 }

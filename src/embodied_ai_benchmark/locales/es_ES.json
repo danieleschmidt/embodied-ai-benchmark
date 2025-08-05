@@ -1,0 +1,103 @@
+{
+  "_locale_name": "Español (España)",
+  "_language_code": "es",
+  "_country_code": "ES",
+  
+  "validation_error": "Error de validación para el campo '{field}' con valor '{value}'",
+  "file_not_found": "Archivo no encontrado: {filename}",
+  "permission_denied": "Permiso denegado para la acción: {action}",
+  "timeout_error": "La operación expiró después de {timeout} segundos",
+  
+  "task_completed": "Tarea '{task}' completada exitosamente en {duration} segundos",
+  "benchmark_finished": "Benchmark completado con {episodes} episodios y {success_rate}% de tasa de éxito",
+  "episode_progress": "Episodio {current} de {total}",
+  "loading_model": "Cargando modelo: {model}",
+  
+  "agent_performance": "Agente '{agent}' logró puntuación: {score}",
+  "system_status": "Estado del sistema - CPU: {cpu}%, Memoria: {memory}%",
+  
+  "start_benchmark": "Iniciar Benchmark",
+  "stop_benchmark": "Detener Benchmark",
+  "pause_benchmark": "Pausar Benchmark",
+  "resume_benchmark": "Reanudar Benchmark",
+  "reset_benchmark": "Reiniciar Benchmark",
+  
+  "configuration": "Configuración",
+  "results": "Resultados",
+  "analysis": "Análisis",
+  "reports": "Informes",
+  "settings": "Ajustes",
+  
+  "success": "Éxito",
+  "failure": "Fallo",
+  "warning": "Advertencia",
+  "error": "Error",
+  "info": "Información",
+  
+  "save": "Guardar",
+  "load": "Cargar",
+  "export": "Exportar",
+  "import": "Importar",
+  "cancel": "Cancelar",
+  "ok": "Aceptar",
+  "yes": "Sí",
+  "no": "No",
+  
+  "benchmark_suite_title": "Suite de Benchmark de IA Embodied",
+  "task_selection": "Seleccionar Tareas",
+  "agent_configuration": "Configuración de Agente",
+  "evaluation_settings": "Configuración de Evaluación",
+  
+  "navigation_tasks": "Tareas de Navegación",
+  "manipulation_tasks": "Tareas de Manipulación",
+  "multi_agent_tasks": "Tareas Multi-Agente",
+  
+  "point_goal_navigation": "Navegación a Punto Objetivo",
+  "furniture_assembly": "Ensamblaje de Muebles",
+  "cooperative_assembly": "Ensamblaje Cooperativo",
+  
+  "random_agent": "Agente Aleatorio",
+  "scripted_agent": "Agente con Script",
+  "learning_agent": "Agente de Aprendizaje",
+  
+  "episodes": "Episodios",
+  "max_steps": "Pasos Máximos",
+  "time_limit": "Límite de Tiempo",
+  "safety_checks": "Verificaciones de Seguridad",
+  "record_trajectories": "Grabar Trayectorias",
+  
+  "success_rate": "Tasa de Éxito",
+  "average_reward": "Recompensa Promedio",
+  "average_steps": "Pasos Promedio",
+  "completion_time": "Tiempo de Finalización",
+  "safety_violations": "Violaciones de Seguridad",
+  
+  "high_performance": "Alto Rendimiento",
+  "medium_performance": "Rendimiento Medio",
+  "low_performance": "Bajo Rendimiento",
+  
+  "excellent": "Excelente",
+  "good": "Bueno",
+  "fair": "Regular",
+  "poor": "Pobre",
+  
+  "starting": "Iniciando...",
+  "running": "Ejecutando...",
+  "completed": "Completado",
+  "failed": "Fallido",
+  "cancelled": "Cancelado",
+  
+  "database_connection_error": "Error al conectar con la base de datos",
+  "model_loading_error": "Error al cargar el modelo",
+  "task_initialization_error": "Error al inicializar la tarea",
+  "agent_creation_error": "Error al crear el agente",
+  
+  "confirm_reset": "¿Está seguro de que desea reiniciar todos los datos?",
+  "confirm_delete": "¿Está seguro de que desea eliminar este elemento?",
+  "unsaved_changes": "Tiene cambios no guardados. ¿Continuar de todos modos?",
+  
+  "data_exported": "Datos exportados exitosamente a {filename}",
+  "data_imported": "Datos importados exitosamente desde {filename}",
+  "settings_saved": "Configuración guardada exitosamente",
+  "settings_loaded": "Configuración cargada exitosamente"
+}

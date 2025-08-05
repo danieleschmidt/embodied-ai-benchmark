@@ -1,0 +1,103 @@
+{
+  "_locale_name": "English (US)",
+  "_language_code": "en",
+  "_country_code": "US",
+  
+  "validation_error": "Validation error for field '{field}' with value '{value}'",
+  "file_not_found": "File not found: {filename}",
+  "permission_denied": "Permission denied for action: {action}",
+  "timeout_error": "Operation timed out after {timeout} seconds",
+  
+  "task_completed": "Task '{task}' completed successfully in {duration} seconds",
+  "benchmark_finished": "Benchmark completed with {episodes} episodes and {success_rate}% success rate",
+  "episode_progress": "Episode {current} of {total}",
+  "loading_model": "Loading model: {model}",
+  
+  "agent_performance": "Agent '{agent}' achieved score: {score}",
+  "system_status": "System status - CPU: {cpu}%, Memory: {memory}%",
+  
+  "start_benchmark": "Start Benchmark",
+  "stop_benchmark": "Stop Benchmark",
+  "pause_benchmark": "Pause Benchmark",
+  "resume_benchmark": "Resume Benchmark",
+  "reset_benchmark": "Reset Benchmark",
+  
+  "configuration": "Configuration",
+  "results": "Results",
+  "analysis": "Analysis", 
+  "reports": "Reports",
+  "settings": "Settings",
+  
+  "success": "Success",
+  "failure": "Failure",
+  "warning": "Warning",
+  "error": "Error",
+  "info": "Information",
+  
+  "save": "Save",
+  "load": "Load",
+  "export": "Export",
+  "import": "Import",
+  "cancel": "Cancel",
+  "ok": "OK",
+  "yes": "Yes",
+  "no": "No",
+  
+  "benchmark_suite_title": "Embodied AI Benchmark Suite",
+  "task_selection": "Select Tasks",
+  "agent_configuration": "Agent Configuration",
+  "evaluation_settings": "Evaluation Settings",
+  
+  "navigation_tasks": "Navigation Tasks",
+  "manipulation_tasks": "Manipulation Tasks",
+  "multi_agent_tasks": "Multi-Agent Tasks",
+  
+  "point_goal_navigation": "Point Goal Navigation",
+  "furniture_assembly": "Furniture Assembly",
+  "cooperative_assembly": "Cooperative Assembly",
+  
+  "random_agent": "Random Agent",
+  "scripted_agent": "Scripted Agent",
+  "learning_agent": "Learning Agent",
+  
+  "episodes": "Episodes",
+  "max_steps": "Maximum Steps",
+  "time_limit": "Time Limit",
+  "safety_checks": "Safety Checks",
+  "record_trajectories": "Record Trajectories",
+  
+  "success_rate": "Success Rate",
+  "average_reward": "Average Reward",
+  "average_steps": "Average Steps",
+  "completion_time": "Completion Time",
+  "safety_violations": "Safety Violations",
+  
+  "high_performance": "High Performance",
+  "medium_performance": "Medium Performance", 
+  "low_performance": "Low Performance",
+  
+  "excellent": "Excellent",
+  "good": "Good",
+  "fair": "Fair",
+  "poor": "Poor",
+  
+  "starting": "Starting...",
+  "running": "Running...",
+  "completed": "Completed",
+  "failed": "Failed",
+  "cancelled": "Cancelled",
+  
+  "database_connection_error": "Failed to connect to database",
+  "model_loading_error": "Failed to load model",
+  "task_initialization_error": "Failed to initialize task",
+  "agent_creation_error": "Failed to create agent",
+  
+  "confirm_reset": "Are you sure you want to reset all data?",
+  "confirm_delete": "Are you sure you want to delete this item?",
+  "unsaved_changes": "You have unsaved changes. Continue anyway?",
+  
+  "data_exported": "Data exported successfully to {filename}",
+  "data_imported": "Data imported successfully from {filename}",
+  "settings_saved": "Settings saved successfully",
+  "settings_loaded": "Settings loaded successfully"
+}

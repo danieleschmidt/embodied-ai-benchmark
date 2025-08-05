@@ -60,31 +60,69 @@ def make_env(task_id: str,
         Configured environment instance
         
     Raises:
-        ValueError: If task_id is not registered
+        ValueError: If task_id is not registered or parameters are invalid
+        RuntimeError: If environment creation fails
     """
+    # Input validation
+    if not isinstance(task_id, str) or not task_id.strip():
+        raise ValueError("task_id must be a non-empty string")
+    
+    if simulator not in ["habitat", "maniskill", "isaac", "mock"]:
+        raise ValueError(f"Unsupported simulator '{simulator}'. Supported: habitat, maniskill, isaac, mock")
+    
+    if render_mode not in ["rgb_array", "human", "none"]:
+        raise ValueError(f"Unsupported render mode '{render_mode}'. Supported: rgb_array, human, none")
+    
     if task_id not in TASK_REGISTRY:
         available_tasks = list(TASK_REGISTRY.keys())
         raise ValueError(f"Unknown task '{task_id}'. Available tasks: {available_tasks}")
     
-    task_info = TASK_REGISTRY[task_id]
-    
-    # Merge default config with provided kwargs
-    config = task_info["default_config"].copy()
-    config.update(kwargs)
-    config.update({
-        "task_id": task_id,
-        "simulator": simulator,
-        "render_mode": render_mode
-    })
-    
-    # Create task and environment
-    task = task_info["task_class"](config)
-    env = task_info["env_class"](config)
-    
-    # Bind task to environment
-    env.set_task(task)
-    
-    return env
+    try:
+        task_info = TASK_REGISTRY[task_id]
+        
+        # Validate and merge configuration
+        config = task_info["default_config"].copy()
+        
+        # Validate kwargs parameters
+        for key, value in kwargs.items():
+            if key in ["max_steps", "time_limit", "num_agents"]:
+                if not isinstance(value, int) or value <= 0:
+                    raise ValueError(f"Parameter '{key}' must be a positive integer, got {value}")
+            elif key == "difficulty":
+                if value not in ["easy", "medium", "hard"] and not isinstance(value, (int, float)):
+                    raise ValueError(f"Difficulty must be 'easy', 'medium', 'hard', or numeric, got {value}")
+        
+        config.update(kwargs)
+        config.update({
+            "task_id": task_id,
+            "simulator": simulator,
+            "render_mode": render_mode
+        })
+        
+        # Create task and environment with error handling
+        try:
+            task = task_info["task_class"](config)
+        except Exception as e:
+            raise RuntimeError(f"Failed to create task '{task_id}': {str(e)}") from e
+        
+        try:
+            env = task_info["env_class"](config)
+        except Exception as e:
+            raise RuntimeError(f"Failed to create environment for '{task_id}': {str(e)}") from e
+        
+        # Bind task to environment
+        if hasattr(env, 'set_task'):
+            env.set_task(task)
+        else:
+            raise RuntimeError(f"Environment class {task_info['env_class'].__name__} does not support task binding")
+        
+        return env
+        
+    except Exception as e:
+        if isinstance(e, (ValueError, RuntimeError)):
+            raise
+        else:
+            raise RuntimeError(f"Unexpected error creating environment for '{task_id}': {str(e)}") from e
 
 
 def make_task(task_id: str, **kwargs) -> BaseTask:

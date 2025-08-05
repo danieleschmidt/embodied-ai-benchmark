@@ -31,11 +31,25 @@ class BaseEnv(ABC):
             
         Returns:
             Initial observation dictionary
+            
+        Raises:
+            RuntimeError: If environment is not properly initialized
+            ValueError: If seed is invalid
         """
-        if seed is not None:
-            np.random.seed(seed)
-        self._episode_count += 1
-        return self._get_observation()
+        try:
+            if seed is not None:
+                if not isinstance(seed, int) or seed < 0:
+                    raise ValueError(f"Seed must be a non-negative integer, got {seed}")
+                np.random.seed(seed)
+            self._episode_count += 1
+            
+            observation = self._get_observation()
+            if not isinstance(observation, dict):
+                raise RuntimeError("Environment observation must be a dictionary")
+            
+            return observation
+        except Exception as e:
+            raise RuntimeError(f"Failed to reset environment: {str(e)}") from e
     
     @abstractmethod
     def step(self, action: Dict[str, Any]) -> Tuple[Dict[str, Any], float, bool, Dict[str, Any]]:
@@ -46,8 +60,23 @@ class BaseEnv(ABC):
             
         Returns:
             Tuple of (observation, reward, done, info)
+            
+        Raises:
+            ValueError: If action is invalid or malformed
+            RuntimeError: If environment step fails
         """
-        pass
+        # Validation will be implemented in concrete classes
+        if not isinstance(action, dict):
+            raise ValueError(f"Action must be a dictionary, got {type(action)}")
+        
+        try:
+            return self._execute_step(action)
+        except Exception as e:
+            raise RuntimeError(f"Environment step failed: {str(e)}") from e
+    
+    def _execute_step(self, action: Dict[str, Any]) -> Tuple[Dict[str, Any], float, bool, Dict[str, Any]]:
+        """Internal step execution - to be implemented by subclasses."""
+        raise NotImplementedError("Subclasses must implement _execute_step")
     
     @abstractmethod
     def render(self, mode: str = "rgb_array") -> Optional[np.ndarray]:

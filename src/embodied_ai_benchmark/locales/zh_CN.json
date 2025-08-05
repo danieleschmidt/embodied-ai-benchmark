@@ -1,0 +1,103 @@
+{
+  "_locale_name": "中文（简体）",
+  "_language_code": "zh",
+  "_country_code": "CN",
+  
+  "validation_error": "字段 '{field}' 验证错误，值为 '{value}'",
+  "file_not_found": "文件未找到：{filename}",
+  "permission_denied": "操作权限被拒绝：{action}",
+  "timeout_error": "操作在 {timeout} 秒后超时",
+  
+  "task_completed": "任务 '{task}' 成功完成，用时 {duration} 秒",
+  "benchmark_finished": "基准测试完成，共 {episodes} 个回合，成功率 {success_rate}%",
+  "episode_progress": "回合 {current} / {total}",
+  "loading_model": "正在加载模型：{model}",
+  
+  "agent_performance": "智能体 '{agent}' 获得分数：{score}",
+  "system_status": "系统状态 - CPU：{cpu}%，内存：{memory}%",
+  
+  "start_benchmark": "开始基准测试",
+  "stop_benchmark": "停止基准测试",
+  "pause_benchmark": "暂停基准测试",
+  "resume_benchmark": "恢复基准测试",
+  "reset_benchmark": "重置基准测试",
+  
+  "configuration": "配置",
+  "results": "结果",
+  "analysis": "分析",
+  "reports": "报告",
+  "settings": "设置",
+  
+  "success": "成功",
+  "failure": "失败",
+  "warning": "警告",
+  "error": "错误",
+  "info": "信息",
+  
+  "save": "保存",
+  "load": "加载",
+  "export": "导出",
+  "import": "导入",
+  "cancel": "取消",
+  "ok": "确定",
+  "yes": "是",
+  "no": "否",
+  
+  "benchmark_suite_title": "具身AI基准测试套件",
+  "task_selection": "选择任务",
+  "agent_configuration": "智能体配置",
+  "evaluation_settings": "评估设置",
+  
+  "navigation_tasks": "导航任务",
+  "manipulation_tasks": "操作任务",
+  "multi_agent_tasks": "多智能体任务",
+  
+  "point_goal_navigation": "点目标导航",
+  "furniture_assembly": "家具组装",
+  "cooperative_assembly": "协作组装",
+  
+  "random_agent": "随机智能体",
+  "scripted_agent": "脚本智能体",
+  "learning_agent": "学习智能体",
+  
+  "episodes": "回合数",
+  "max_steps": "最大步数",
+  "time_limit": "时间限制",
+  "safety_checks": "安全检查",
+  "record_trajectories": "记录轨迹",
+  
+  "success_rate": "成功率",
+  "average_reward": "平均奖励",
+  "average_steps": "平均步数",
+  "completion_time": "完成时间",
+  "safety_violations": "安全违规",
+  
+  "high_performance": "高性能",
+  "medium_performance": "中等性能",
+  "low_performance": "低性能",
+  
+  "excellent": "优秀",
+  "good": "良好",
+  "fair": "一般",
+  "poor": "较差",
+  
+  "starting": "启动中...",
+  "running": "运行中...",
+  "completed": "已完成",
+  "failed": "已失败",
+  "cancelled": "已取消",
+  
+  "database_connection_error": "数据库连接失败",
+  "model_loading_error": "模型加载失败",
+  "task_initialization_error": "任务初始化失败",
+  "agent_creation_error": "智能体创建失败",
+  
+  "confirm_reset": "确定要重置所有数据吗？",
+  "confirm_delete": "确定要删除此项目吗？",
+  "unsaved_changes": "您有未保存的更改。仍要继续吗？",
+  
+  "data_exported": "数据已成功导出到 {filename}",
+  "data_imported": "数据已成功从 {filename} 导入",
+  "settings_saved": "设置已成功保存",
+  "settings_loaded": "设置已成功加载"
+}

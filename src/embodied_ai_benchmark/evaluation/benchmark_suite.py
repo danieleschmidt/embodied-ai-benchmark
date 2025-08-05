@@ -4,12 +4,18 @@ import time
 from typing import Any, Dict, List, Optional, Union
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 
 from ..core.base_task import BaseTask
 from ..core.base_env import BaseEnv
 from ..core.base_agent import BaseAgent, RandomAgent
 from ..core.base_metric import BaseMetric, SuccessMetric, EfficiencyMetric, SafetyMetric
 from .evaluator import Evaluator
+from ..utils.logging_config import get_logger
+from ..utils.validation import InputValidator, ValidationError, SecurityValidator
+from ..utils.monitoring import performance_monitor, health_checker, BenchmarkMetrics
+
+logger = get_logger(__name__)
 
 
 class BenchmarkSuite:
@@ -83,7 +89,7 @@ class BenchmarkSuite:
                  seed: Optional[int] = None,
                  parallel: bool = False,
                  num_workers: int = 4) -> Dict[str, Any]:
-        """Evaluate agent on benchmark environment.
+        """Evaluate agent on benchmark environment with comprehensive monitoring.
         
         Args:
             env: Environment to evaluate on
@@ -96,28 +102,126 @@ class BenchmarkSuite:
             
         Returns:
             Dictionary of evaluation results
+            
+        Raises:
+            ValidationError: If input parameters are invalid
+            RuntimeError: If evaluation fails
         """
-        if seed is not None:
-            np.random.seed(seed)
+        # Input validation
+        try:
+            self._validate_evaluation_inputs(env, agent, num_episodes, max_steps_per_episode, seed)
+        except ValidationError as e:
+            logger.error(f"Evaluation input validation failed: {e}")
+            raise
         
-        start_time = time.time()
+        # Pre-evaluation health check
+        health_status = health_checker.get_overall_health()
+        if not health_status["overall_healthy"]:
+            logger.warning(f"System health check failed: {health_status['health_percentage']:.1f}% healthy")
+            # Continue with warning but log the issues
+            for check_name, result in health_status["details"].items():
+                if not result["healthy"]:
+                    logger.warning(f"Health check '{check_name}' failed: {result['message']}")
         
-        if parallel and num_episodes > 1:
-            results = self._evaluate_parallel(
-                env, agent, num_episodes, max_steps_per_episode, num_workers
+        # Start performance monitoring
+        if not performance_monitor._monitoring_active:
+            performance_monitor.start_monitoring()
+        
+        # Log evaluation start
+        agent_name = getattr(agent, 'agent_id', agent.__class__.__name__)
+        task_name = getattr(env, 'task_id', 'unknown_task')
+        
+        logger.info(f"Starting evaluation: {agent_name} on {task_name}")
+        logger.info(f"Episodes: {num_episodes}, Max steps: {max_steps_per_episode}, Parallel: {parallel}")
+        
+        try:
+            if seed is not None:
+                np.random.seed(seed)
+            
+            start_time = time.time()
+            
+            # Execute evaluation with error handling
+            if parallel and num_episodes > 1:
+                results = self._evaluate_parallel(
+                    env, agent, num_episodes, max_steps_per_episode, num_workers
+                )
+            else:
+                results = self._evaluate_sequential(
+                    env, agent, num_episodes, max_steps_per_episode
+                )
+            
+            total_time = time.time() - start_time
+            
+            # Validate results
+            if not results:
+                raise RuntimeError("Evaluation produced no results")
+            
+            # Aggregate results with error handling
+            try:
+                aggregated_results = self._aggregate_results(results, total_time)
+            except Exception as e:
+                logger.error(f"Result aggregation failed: {e}")
+                raise RuntimeError(f"Failed to aggregate evaluation results: {e}") from e
+            
+            # Add evaluation metadata
+            aggregated_results.update({
+                "evaluation_id": f"{agent_name}_{task_name}_{int(time.time())}",
+                "agent_name": agent_name,
+                "task_name": task_name,
+                "evaluation_start_time": datetime.fromtimestamp(start_time).isoformat(),
+                "evaluation_end_time": datetime.now().isoformat(),
+                "seed": seed,
+                "parallel": parallel,
+                "system_health": health_status
+            })
+            
+            self._results_history.append(aggregated_results)
+            
+            # Log successful completion
+            logger.info(f"Evaluation completed successfully in {total_time:.2f}s")
+            logger.info(f"Success rate: {aggregated_results.get('success_rate', 0):.2%}")
+            
+            return aggregated_results
+            
+        except Exception as e:
+            logger.error(f"Evaluation failed: {e}")
+            # Log failure details
+            failure_info = {
+                "agent_name": agent_name,
+                "task_name": task_name,
+                "error": str(e),
+                "timestamp": datetime.now().isoformat()
+            }
+            logger.error(f"Evaluation failure details: {failure_info}")
+            raise RuntimeError(f"Evaluation failed for {agent_name} on {task_name}: {e}") from e
+    
+    def _validate_evaluation_inputs(self, env, agent, num_episodes, max_steps_per_episode, seed):
+        """Validate evaluation input parameters."""
+        if not isinstance(env, BaseEnv):
+            raise ValidationError(f"Environment must be BaseEnv instance, got {type(env)}")
+        
+        if not isinstance(agent, BaseAgent):
+            raise ValidationError(f"Agent must be BaseAgent instance, got {type(agent)}")
+        
+        if not isinstance(num_episodes, int) or num_episodes <= 0:
+            raise ValidationError(f"num_episodes must be positive integer, got {num_episodes}")
+        
+        if not isinstance(max_steps_per_episode, int) or max_steps_per_episode <= 0:
+            raise ValidationError(f"max_steps_per_episode must be positive integer, got {max_steps_per_episode}")
+        
+        if seed is not None and (not isinstance(seed, int) or seed < 0):
+            raise ValidationError(f"seed must be non-negative integer or None, got {seed}")
+        
+        # Resource checks
+        try:
+            SecurityValidator.check_resource_limits(
+                memory_mb=None,  # Will be checked during execution
+                cpu_percent=None,
+                gpu_memory_mb=None
             )
-        else:
-            results = self._evaluate_sequential(
-                env, agent, num_episodes, max_steps_per_episode
-            )
-        
-        total_time = time.time() - start_time
-        
-        # Aggregate results
-        aggregated_results = self._aggregate_results(results, total_time)
-        self._results_history.append(aggregated_results)
-        
-        return aggregated_results
+        except ValidationError as e:
+            logger.warning(f"Resource limit warning: {e}")
+            # Don't fail evaluation, just warn
     
     def _evaluate_sequential(self, 
                            env: BaseEnv, 

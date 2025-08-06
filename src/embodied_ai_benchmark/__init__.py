@@ -47,6 +47,12 @@ from .language.language_interface import LanguageTaskInterface, TaskParser, Inst
 # Physics simulation
 from .physics.physics_config import PhysicsConfig, MaterialProperties, PhysicsEngine
 
+# Utilities and optimization
+from .utils.error_handling import ErrorHandler, ErrorRecoveryStrategy
+from .utils.concurrent_execution import ConcurrentBenchmarkExecutor, AdvancedTaskManager, LoadBalancer
+from .utils.benchmark_metrics import BenchmarkMetricsCollector
+from .utils.caching import LRUCache, AdaptiveCache, PersistentCache, cache_result
+
 __version__ = "1.0.0"
 __all__ = [
     # Core
@@ -93,4 +99,16 @@ __all__ = [
     "PhysicsConfig",
     "MaterialProperties",
     "PhysicsEngine",
+    
+    # Utilities and optimization
+    "ErrorHandler",
+    "ErrorRecoveryStrategy",
+    "ConcurrentBenchmarkExecutor",
+    "AdvancedTaskManager",
+    "LoadBalancer",
+    "BenchmarkMetricsCollector",
+    "LRUCache",
+    "AdaptiveCache",
+    "PersistentCache",
+    "cache_result",
 ]

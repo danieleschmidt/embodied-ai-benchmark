@@ -24,7 +24,8 @@ import psutil
 
 from .logging_config import get_logger
 from .error_handling import handle_errors, ErrorCategory
-from .monitoring import performance_monitor, benchmark_metrics
+from .monitoring import performance_monitor
+from .benchmark_metrics import benchmark_metrics
 
 logger = get_logger(__name__)
 

@@ -53,6 +53,16 @@ from .utils.concurrent_execution import ConcurrentBenchmarkExecutor, AdvancedTas
 from .utils.benchmark_metrics import BenchmarkMetricsCollector
 from .utils.caching import LRUCache, AdaptiveCache, PersistentCache, cache_result
 
+# Autonomous SDLC System
+from .sdlc.autonomous_orchestrator import AutonomousSDLCOrchestrator, AutonomousProject, run_autonomous_sdlc
+from .sdlc.requirements_engine import RequirementsEngine, StakeholderAnalyzer, RequirementPrioritizer
+from .sdlc.code_generator import CodeGenerator, TemplateEngine, RefactoringEngine
+from .sdlc.project_orchestrator import ProjectOrchestrator, SprintPlanner, TaskDecomposer
+from .sdlc.cicd_automation import CICDPipeline, DeploymentManager, QualityGateManager
+from .sdlc.doc_generator import DocumentationGenerator, APIDocGenerator, ArchitectureDocGenerator
+from .sdlc.quality_assurance import QualityAssuranceEngine, TestGenerator, CodeReviewer
+from .sdlc.security_monitor import SecurityMonitoringSystem
+
 __version__ = "1.0.0"
 __all__ = [
     # Core
@@ -111,4 +121,28 @@ __all__ = [
     "AdaptiveCache",
     "PersistentCache",
     "cache_result",
+    
+    # Autonomous SDLC System
+    "AutonomousSDLCOrchestrator",
+    "AutonomousProject", 
+    "run_autonomous_sdlc",
+    "RequirementsEngine",
+    "StakeholderAnalyzer",
+    "RequirementPrioritizer",
+    "CodeGenerator",
+    "TemplateEngine",
+    "RefactoringEngine",
+    "ProjectOrchestrator",
+    "SprintPlanner", 
+    "TaskDecomposer",
+    "CICDPipeline",
+    "DeploymentManager",
+    "QualityGateManager",
+    "DocumentationGenerator",
+    "APIDocGenerator",
+    "ArchitectureDocGenerator", 
+    "QualityAssuranceEngine",
+    "TestGenerator",
+    "CodeReviewer",
+    "SecurityMonitoringSystem",
 ]

@@ -1,0 +1,527 @@
+version: '3.8'
+
+# Terragon Autonomous SDLC v2.0 - Production Docker Compose
+# Deployment-ready configuration for production environments
+
+services:
+  # Core Orchestrator Service
+  terragon-orchestrator:
+    image: terragon/autonomous-orchestrator:v2.0
+    container_name: terragon-orchestrator
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8443:8443"  # HTTPS
+    environment:
+      - TERRAGON_ENVIRONMENT=production
+      - TERRAGON_LOG_LEVEL=INFO
+      - TERRAGON_DB_HOST=postgres
+      - TERRAGON_DB_PASSWORD=${DB_PASSWORD}
+      - TERRAGON_REDIS_URL=redis://redis:6379
+      - TERRAGON_QUANTUM_ENABLED=true
+      - TERRAGON_ML_ENABLED=true
+      - TERRAGON_SECRET_KEY=${SECRET_KEY}
+      - TERRAGON_JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+      - terragon-data:/app/data
+    depends_on:
+      - postgres
+      - redis
+      - ml-engine
+      - quantum-engine
+    networks:
+      - terragon-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+
+  # Advanced ML Engine Service
+  ml-engine:
+    image: terragon/ml-engine:v2.0
+    container_name: terragon-ml-engine
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - TERRAGON_ENVIRONMENT=production
+      - TERRAGON_LOG_LEVEL=INFO
+      - TERRAGON_ML_CACHE_SIZE=1000
+      - TERRAGON_AUTOML_ENABLED=true
+      - TERRAGON_NAS_ENABLED=true
+      - CUDA_VISIBLE_DEVICES=0  # GPU support
+    volumes:
+      - ./ml-models:/app/models
+      - ./ml-cache:/app/cache
+      - terragon-ml-data:/app/data
+    networks:
+      - terragon-network
+    runtime: nvidia  # GPU support
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 45s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+    deploy:
+      resources:
+        limits:
+          cpus: '6.0'
+          memory: 16G
+        reservations:
+          cpus: '3.0'
+          memory: 8G
+
+  # Quantum Orchestration Engine
+  quantum-engine:
+    image: terragon/quantum-engine:v2.0
+    container_name: terragon-quantum-engine
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+    environment:
+      - TERRAGON_ENVIRONMENT=production
+      - TERRAGON_LOG_LEVEL=INFO
+      - TERRAGON_QUANTUM_SIMULATOR=qiskit
+      - TERRAGON_QUANTUM_BACKEND=ibmq_qasm_simulator
+      - TERRAGON_QUANTUM_QUBITS=8
+      - IBMQ_TOKEN=${IBMQ_TOKEN}  # Optional: real quantum hardware
+    volumes:
+      - ./quantum-cache:/app/cache
+      - terragon-quantum-data:/app/data
+    networks:
+      - terragon-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 60s
+      timeout: 20s
+      retries: 3
+      start_period: 90s
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 12G
+        reservations:
+          cpus: '2.0'
+          memory: 6G
+
+  # Autonomous Testing Engine
+  testing-engine:
+    image: terragon/testing-engine:v2.0
+    container_name: terragon-testing-engine
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+    environment:
+      - TERRAGON_ENVIRONMENT=production
+      - TERRAGON_LOG_LEVEL=INFO
+      - TERRAGON_PARALLEL_TESTING=true
+      - TERRAGON_AI_TEST_GENERATION=true
+      - TERRAGON_COVERAGE_TARGET=0.85
+    volumes:
+      - ./test-reports:/app/reports
+      - ./test-artifacts:/app/artifacts
+      - terragon-testing-data:/app/data
+    networks:
+      - terragon-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/health"]
+      interval: 45s
+      timeout: 15s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '3.0'
+          memory: 8G
+        reservations:
+          cpus: '1.5'
+          memory: 4G
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: terragon-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=terragon_sdlc
+      - POSTGRES_USER=terragon
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./sql/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - terragon-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U terragon -d terragon_sdlc"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: terragon-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - terragon-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # Message Queue (RabbitMQ)
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: terragon-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"  # Management UI
+    environment:
+      - RABBITMQ_DEFAULT_USER=terragon
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+      - RABBITMQ_DEFAULT_VHOST=terragon
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - ./config/rabbitmq:/etc/rabbitmq:ro
+    networks:
+      - terragon-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: terragon-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/rules:/etc/prometheus/rules:ro
+      - prometheus-data:/prometheus
+    networks:
+      - terragon-network
+    depends_on:
+      - terragon-orchestrator
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4G
+        reservations:
+          cpus: '0.5'
+          memory: 2G
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: terragon-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    networks:
+      - terragon-network
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+
+  # Log Management - ELK Stack (Elasticsearch)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: terragon-elasticsearch
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - terragon-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  # Log Management - Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: terragon-kibana
+    restart: unless-stopped
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - SERVER_HOST=0.0.0.0
+    volumes:
+      - kibana-data:/usr/share/kibana/data
+    networks:
+      - terragon-network
+    depends_on:
+      - elasticsearch
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # Reverse Proxy - Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: terragon-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx-logs:/var/log/nginx
+    networks:
+      - terragon-network
+    depends_on:
+      - terragon-orchestrator
+      - grafana
+      - kibana
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # Security Scanner - Trivy
+  trivy-server:
+    image: aquasec/trivy:latest
+    container_name: terragon-security-scanner
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+    command: ["server", "--listen", "0.0.0.0:8084"]
+    volumes:
+      - trivy-cache:/root/.cache
+    networks:
+      - terragon-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+  # Backup Service
+  backup:
+    image: terragon/backup-service:v2.0
+    container_name: terragon-backup
+    restart: unless-stopped
+    environment:
+      - BACKUP_SCHEDULE=${BACKUP_SCHEDULE:-0 2 * * *}  # Daily at 2 AM
+      - BACKUP_RETENTION=30d
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - BACKUP_BUCKET=${BACKUP_BUCKET}
+    volumes:
+      - postgres-data:/backup/postgres:ro
+      - redis-data:/backup/redis:ro
+      - terragon-data:/backup/terragon:ro
+      - ./backup-scripts:/scripts:ro
+    networks:
+      - terragon-network
+    depends_on:
+      - postgres
+      - redis
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+
+# Network Configuration
+networks:
+  terragon-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+        - subnet: 2001:db8::/64
+
+# Volume Configuration
+volumes:
+  # Application Data
+  terragon-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/terragon
+  
+  terragon-ml-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/ml
+      
+  terragon-quantum-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/quantum
+      
+  terragon-testing-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/testing
+
+  # Database Data
+  postgres-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/postgres
+      
+  redis-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/redis
+      
+  rabbitmq-data:
+    driver: local
+
+  # Monitoring Data
+  prometheus-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/prometheus
+      
+  grafana-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/grafana
+
+  # Logging Data  
+  elasticsearch-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_DIR}/elasticsearch
+      
+  kibana-data:
+    driver: local
+    
+  nginx-logs:
+    driver: local
+    
+  trivy-cache:
+    driver: local

@@ -1,0 +1,342 @@
+{
+  "timestamp": 1755039269.9534812,
+  "overall_passed": false,
+  "overall_score": 71.42857142857143,
+  "gates_passed": 5,
+  "gates_failed": 2,
+  "total_gates": 7,
+  "passed_gates": [
+    "performance",
+    "test_coverage",
+    "documentation",
+    "global_compliance",
+    "deployment_readiness"
+  ],
+  "failed_gates": [
+    "code_structure",
+    "security"
+  ],
+  "warnings": [],
+  "detailed_results": {
+    "code_structure": {
+      "passed": false,
+      "score": 25.0,
+      "import_errors": [
+        "embodied_ai_benchmark: No module named 'numpy'",
+        "embodied_ai_benchmark.evaluation: No module named 'numpy'",
+        "embodied_ai_benchmark.tasks: No module named 'numpy'"
+      ],
+      "missing_files": [],
+      "warnings": 0
+    },
+    "security": {
+      "passed": false,
+      "score": 40.0,
+      "checks": {
+        "input_validation": {
+          "passed": true,
+          "message": "Input validation in 71.6% of files",
+          "coverage": 71.62162162162163
+        },
+        "file_path_safety": {
+          "passed": false,
+          "message": "Found 2 potentially unsafe patterns",
+          "unsafe_patterns": [
+            "src/embodied_ai_benchmark/sdlc/doc_generator.py:eval(",
+            "src/embodied_ai_benchmark/utils/optimization.py:eval("
+          ]
+        },
+        "import_safety": {
+          "passed": true,
+          "message": "93.2% of files have safe imports",
+          "safety_rate": 93.24324324324324
+        },
+        "credential_exposure": {
+          "passed": false,
+          "message": "Found 30 potential credential exposures",
+          "exposures": [
+            "quality_gates_validation.py:314",
+            "quality_gates_validation.py:315",
+            "quality_gates_validation.py:316",
+            "quality_gates_validation.py:317",
+            "tests/test_security.py:281",
+            "tests/test_security.py:282",
+            "tests/test_security.py:283",
+            "src/embodied_ai_benchmark/database/connection.py:108",
+            "src/embodied_ai_benchmark/database/connection.py:328",
+            "src/embodied_ai_benchmark/sdlc/doc_generator.py:934",
+            "test_env/lib/python3.12/site-packages/pip/_internal/network/auth.py:512",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/distlib/index.py:232",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/requests/adapters.py:218",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/prompt.py:136",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/prompt.py:203",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/prompt.py:365",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/prompt.py:370",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/truststore/_api.py:145",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connection.py:308",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connection.py:333",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connection.py:423",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connectionpool.py:940",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connectionpool.py:983",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connectionpool.py:1039",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/latex.py:506",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/contrib/pyopenssl.py:473",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/contrib/securetransport.py:873",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/contrib/socks.py:102",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/contrib/socks.py:174",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/util/ssl_.py:366"
+          ]
+        },
+        "dangerous_operations": {
+          "passed": false,
+          "message": "Found 129 potentially dangerous operations",
+          "dangerous_ops": [
+            "comprehensive_validation.py:format(",
+            "quality_gates_validation.py:rm -rf",
+            "quality_gates_validation.py:format(",
+            "quality_gates_validation.py:delete *",
+            "quality_gates_validation.py:DROP TABLE",
+            "quality_gates_validation.py:sudo ",
+            "tests/factories.py:format(",
+            "src/embodied_ai_benchmark/cache/cache_manager.py:format(",
+            "src/embodied_ai_benchmark/core/base_task.py:format(",
+            "src/embodied_ai_benchmark/curriculum/llm_curriculum.py:format(",
+            "src/embodied_ai_benchmark/evaluation/benchmark_suite.py:format(",
+            "src/embodied_ai_benchmark/multiagent/coordination_protocols.py:format(",
+            "src/embodied_ai_benchmark/repositories/base_repository.py:format(",
+            "src/embodied_ai_benchmark/repositories/experiment_repository.py:format(",
+            "src/embodied_ai_benchmark/sdlc/autonomous_orchestrator.py:format(",
+            "src/embodied_ai_benchmark/sdlc/autonomous_resilience_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/autonomous_testing_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/code_generator.py:format(",
+            "src/embodied_ai_benchmark/sdlc/observability_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/project_orchestrator.py:format(",
+            "src/embodied_ai_benchmark/sdlc/quality_assurance.py:rm -rf",
+            "src/embodied_ai_benchmark/sdlc/quality_assurance.py:format(",
+            "src/embodied_ai_benchmark/sdlc/quality_assurance.py:DROP TABLE",
+            "src/embodied_ai_benchmark/sdlc/quantum_orchestration_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/requirements_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/security_hardening_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/security_monitor.py:format(",
+            "src/embodied_ai_benchmark/utils/benchmark_metrics.py:format(",
+            "src/embodied_ai_benchmark/utils/compliance.py:format(",
+            "src/embodied_ai_benchmark/utils/error_handling.py:format(",
+            "src/embodied_ai_benchmark/utils/i18n.py:format(",
+            "src/embodied_ai_benchmark/utils/logging_config.py:format(",
+            "src/embodied_ai_benchmark/utils/monitoring.py:format(",
+            "src/embodied_ai_benchmark/database/migrations/001_create_tables.py:DROP TABLE",
+            "test_env/lib/python3.12/site-packages/pip/__pip-runner__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/build_env.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/configuration.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/exceptions.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/pyproject.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/self_outdated_check.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/__init__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/typing_extensions.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/cli/cmdoptions.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/cli/parser.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/cli/req_command.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/cli/req_command.py:sudo ",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/cache.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/completion.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/freeze.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/hash.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/index.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/install.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/commands/search.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/distributions/sdist.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/index/package_finder.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/locations/base.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/models/candidate.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/models/link.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/models/search_scope.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/network/session.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/req/constructors.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/req/req_file.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/req/req_install.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/req/req_set.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/req/req_uninstall.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/compatibility_tags.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/deprecation.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/direct_url_helpers.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/filesystem.py:sudo ",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/logging.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/misc.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/setuptools_build.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/unpacking.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/utils/wheel.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/operations/build/build_tracker.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/operations/build/metadata_legacy.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/operations/build/wheel_legacy.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/operations/install/wheel.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/resolution/legacy/resolver.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/candidates.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/reporter.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_internal/resolution/resolvelib/resolver.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/cachecontrol/controller.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/distlib/compat.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/distro/distro.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/idna/codec.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/idna/core.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/msgpack/ext.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/packaging/_manylinux.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/packaging/markers.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/packaging/specifiers.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/packaging/tags.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pkg_resources/__init__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/__init__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/console.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatter.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/style.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pyparsing/__init__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pyparsing/core.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pyparsing/exceptions.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pyparsing/results.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/requests/__init__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/requests/auth.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/requests/help.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/resolvelib/resolvers.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/resolvelib/structs.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/_export_format.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/_log_render.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/console.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/filesize.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/jupyter.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/logging.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/rich/progress.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/_collections.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/connection.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/fields.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/html.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/img.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/irc.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/other.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/terminal.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/formatters/terminal256.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pygments/lexers/python.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/pyparsing/diagram/__init__.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/util/response.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/util/retry.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/util/ssl_.py:format(",
+            "test_env/lib/python3.12/site-packages/pip/_vendor/urllib3/util/url.py:format(",
+            "test_env/lib/python3.12/site-packages/mpmath/tests/test_convert.py:format("
+          ]
+        }
+      }
+    },
+    "performance": {
+      "passed": true,
+      "score": 100,
+      "checks": [
+        "\u2705 Gen1 success rate: 40.0%",
+        "\u2705 Gen2 robustness: 100.0%",
+        "\u2705 Cache hit rate: 100.0%",
+        "\u2705 Concurrent execution implemented"
+      ],
+      "performance_data_files": 3
+    },
+    "test_coverage": {
+      "passed": true,
+      "score": 80.0,
+      "test_files": 19,
+      "source_files": 74,
+      "coverage_percentage": 100.0,
+      "config_files": 1
+    },
+    "documentation": {
+      "passed": true,
+      "score": 120,
+      "documentation_files": {
+        "README.md": "\u2705 Complete",
+        "ARCHITECTURE.md": "\u2705 Complete",
+        "CHANGELOG.md": "\u2705 Complete",
+        "CONTRIBUTING.md": "\u2705 Complete",
+        "LICENSE": "\u2705 Complete"
+      },
+      "inline_documentation_percentage": 100.0
+    },
+    "global_compliance": {
+      "passed": true,
+      "score": 100.0,
+      "checks": {
+        "i18n_support": {
+          "passed": true,
+          "message": "I18n support: 3 locale files, code patterns: True",
+          "locale_files": 3,
+          "code_patterns": true
+        },
+        "gdpr_compliance": {
+          "passed": true,
+          "message": "Privacy indicators in 15 files, docs: False",
+          "privacy_mentions": 15,
+          "privacy_docs": false
+        },
+        "accessibility": {
+          "passed": true,
+          "message": "Accessibility indicators in 4 files",
+          "mentions": 4
+        },
+        "cross_platform": {
+          "passed": true,
+          "message": "Platform support in config: False, code patterns: True",
+          "config_support": false,
+          "code_patterns": true
+        },
+        "license_compliance": {
+          "passed": true,
+          "message": "License file: True, headers: 10.0%",
+          "license_file": true,
+          "header_coverage": 10.0
+        }
+      }
+    },
+    "deployment_readiness": {
+      "passed": true,
+      "score": 60.0,
+      "checks": {
+        "package_configuration": {
+          "passed": true,
+          "message": "Package config: 5/5 required fields",
+          "details": {
+            "required_fields": [
+              "name",
+              "version",
+              "description",
+              "authors",
+              "dependencies"
+            ],
+            "found_fields": 5
+          }
+        },
+        "docker_support": {
+          "passed": false,
+          "message": "Docker files: []",
+          "docker_files": []
+        },
+        "ci_cd_configuration": {
+          "passed": false,
+          "message": "CI/CD configs: []",
+          "cicd_configs": []
+        },
+        "environment_configuration": {
+          "passed": true,
+          "message": "Env config files: ['.env.example'], code usage: True",
+          "config_files": [
+            ".env.example"
+          ],
+          "code_usage": true
+        },
+        "production_settings": {
+          "passed": true,
+          "message": "Production configs: 3 files, code patterns: True",
+          "config_files": 3,
+          "code_patterns": true
+        }
+      }
+    }
+  },
+  "recommendations": [
+    "Improve code organization and fix import issues",
+    "Address security vulnerabilities and add input validation"
+  ]
+}

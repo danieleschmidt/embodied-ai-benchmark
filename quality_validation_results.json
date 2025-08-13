@@ -1,0 +1,121 @@
+{
+  "timestamp": "2025-08-13 07:39:41",
+  "validation_results": {
+    "import_validation": {
+      "status": "FAIL",
+      "imported_modules": [],
+      "failed_imports": [
+        "embodied_ai_benchmark.evaluation.cross_simulator_benchmark",
+        "embodied_ai_benchmark.curriculum.emergent_curriculum",
+        "embodied_ai_benchmark.physics.adaptive_physics",
+        "embodied_ai_benchmark.evaluation.long_horizon_benchmark",
+        "embodied_ai_benchmark.utils.distributed_execution",
+        "embodied_ai_benchmark.utils.advanced_caching"
+      ],
+      "details": {
+        "embodied_ai_benchmark.evaluation.cross_simulator_benchmark": "unmatched ')' (doc_generator.py, line 1038)",
+        "embodied_ai_benchmark.curriculum.emergent_curriculum": "unmatched ')' (doc_generator.py, line 1038)",
+        "embodied_ai_benchmark.physics.adaptive_physics": "unmatched ')' (doc_generator.py, line 1038)",
+        "embodied_ai_benchmark.evaluation.long_horizon_benchmark": "cannot import name 'ErrorRecoveryManager' from 'embodied_ai_benchmark.utils.error_handling' (/root/repo/src/embodied_ai_benchmark/utils/error_handling.py)",
+        "embodied_ai_benchmark.utils.distributed_execution": "unmatched ')' (doc_generator.py, line 1038)",
+        "embodied_ai_benchmark.utils.advanced_caching": "unmatched ')' (doc_generator.py, line 1038)"
+      },
+      "error": "Failed to import 6 modules",
+      "execution_time": 0.33021092414855957
+    },
+    "code_structure": {
+      "status": "PASS",
+      "missing_directories": [],
+      "missing_files": [],
+      "structure_score": 1.0,
+      "execution_time": 0.0002510547637939453
+    },
+    "research_components": {
+      "status": "FAIL",
+      "component_tests": {
+        "cross_simulator_benchmark": "PASS",
+        "emergent_curriculum": "FAIL",
+        "adaptive_physics": "FAIL",
+        "long_horizon_benchmark": "FAIL"
+      },
+      "errors": [
+        "Emergent Curriculum: 'NoneType' object has no attribute 'get'",
+        "Adaptive Physics: 'NoneType' object has no attribute 'get'",
+        "Long-Horizon Benchmark: cannot import name 'ErrorRecoveryManager' from 'embodied_ai_benchmark.utils.error_handling' (/root/repo/src/embodied_ai_benchmark/utils/error_handling.py)"
+      ],
+      "error": "Only 1/4 component tests passed",
+      "execution_time": 0.0015783309936523438
+    },
+    "performance_scaling": {
+      "status": "PASS",
+      "scaling_tests": {
+        "distributed_execution": "PASS",
+        "advanced_caching": "PASS"
+      },
+      "errors": [],
+      "execution_time": 0.00044846534729003906
+    },
+    "error_handling": {
+      "status": "PASS",
+      "error_handling_tests": {
+        "safe_executor": "PASS",
+        "monitoring": "PASS"
+      },
+      "resilience_features": [
+        "try-except blocks",
+        "timeout handling",
+        "retry mechanisms",
+        "graceful degradation"
+      ],
+      "execution_time": 2.0265579223632812e-05
+    },
+    "security_compliance": {
+      "status": "FAIL",
+      "security_checks": {
+        "security_validator": "PASS",
+        "input_validator": "FAIL"
+      },
+      "compliance_features": [
+        "Input validation",
+        "Resource limits",
+        "Error sanitization",
+        "Safe execution contexts"
+      ],
+      "error": "Insufficient security measures",
+      "execution_time": 1.5497207641601562e-05
+    },
+    "documentation_coverage": {
+      "status": "PASS",
+      "documentation_files": [
+        "README.md",
+        "ARCHITECTURE.md",
+        "DEPLOYMENT.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md"
+      ],
+      "missing_docs": [],
+      "coverage_score": 1.0,
+      "execution_time": 0.0001399517059326172
+    },
+    "deployment_readiness": {
+      "status": "PASS",
+      "deployment_files": [
+        "Dockerfile",
+        "docker-compose.yml",
+        "kubernetes-deployment.yaml",
+        "pyproject.toml"
+      ],
+      "missing_deployment_files": [],
+      "container_ready": true,
+      "ci_cd_ready": false,
+      "execution_time": 0.00012159347534179688
+    }
+  },
+  "overall_status": "PARTIAL",
+  "summary": {
+    "total_validations": 8,
+    "passed_validations": 5,
+    "failed_validations": 3,
+    "success_rate": 0.625
+  }
+}

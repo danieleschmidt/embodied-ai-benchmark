@@ -828,8 +828,8 @@ class CICDPipeline:
             steps {{'''
             for step in steps:
                 jenkinsfile += f'''
-                sh '{step.command}\'\'\'
-            }
+                sh '{step.command}' 
+            ''' + '''
         }'''
         
         jenkinsfile += '''

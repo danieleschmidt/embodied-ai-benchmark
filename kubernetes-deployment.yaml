@@ -1,0 +1,400 @@
+# Embodied AI Benchmark++ Kubernetes Deployment Configuration
+# Production-ready Kubernetes manifests with auto-scaling and monitoring
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: embodied-ai-benchmark
+  labels:
+    name: embodied-ai-benchmark
+    environment: production
+
+---
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: benchmark-config
+  namespace: embodied-ai-benchmark
+data:
+  BENCHMARK_ENV: "production"
+  BENCHMARK_LOG_LEVEL: "INFO"
+  BENCHMARK_API_HOST: "0.0.0.0"
+  BENCHMARK_API_PORT: "8080"
+  BENCHMARK_WORKERS: "4"
+  BENCHMARK_CACHE_SIZE: "2000"
+  BENCHMARK_MAX_MEMORY_MB: "4096"
+  BENCHMARK_MAX_CONCURRENT: "100"
+
+---
+# Secret for sensitive configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: benchmark-secrets
+  namespace: embodied-ai-benchmark
+type: Opaque
+data:
+  # Base64 encoded values (replace with actual secrets)
+  DATABASE_URL: cG9zdGdyZXNxbDovL3VzZXI6cGFzc3dvcmRAbG9jYWxob3N0L2RiCg==
+  REDIS_URL: cmVkaXM6Ly9sb2NhbGhvc3Q6NjM3OQo=
+  API_SECRET_KEY: eW91cl9zZWNyZXRfa2V5X2hlcmUK
+
+---
+# Deployment for the main application
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: benchmark-app
+  namespace: embodied-ai-benchmark
+  labels:
+    app: benchmark-app
+    version: v1.0.0
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: benchmark-app
+  template:
+    metadata:
+      labels:
+        app: benchmark-app
+        version: v1.0.0
+    spec:
+      containers:
+      - name: benchmark-app
+        image: embodied-ai-benchmark:1.0.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: BENCHMARK_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: benchmark-config
+              key: BENCHMARK_ENV
+        - name: BENCHMARK_LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: benchmark-config
+              key: BENCHMARK_LOG_LEVEL
+        - name: BENCHMARK_API_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: benchmark-config
+              key: BENCHMARK_API_HOST
+        - name: BENCHMARK_API_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: benchmark-config
+              key: BENCHMARK_API_PORT
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: benchmark-secrets
+              key: DATABASE_URL
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: benchmark-secrets
+              key: REDIS_URL
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        volumeMounts:
+        - name: app-data
+          mountPath: /app/data
+        - name: app-logs
+          mountPath: /app/logs
+        - name: app-cache
+          mountPath: /app/cache
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: benchmark-data-pvc
+      - name: app-logs
+        persistentVolumeClaim:
+          claimName: benchmark-logs-pvc
+      - name: app-cache
+        emptyDir:
+          sizeLimit: 1Gi
+
+---
+# Service for the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: benchmark-service
+  namespace: embodied-ai-benchmark
+  labels:
+    app: benchmark-app
+spec:
+  selector:
+    app: benchmark-app
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  type: ClusterIP
+
+---
+# Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: benchmark-hpa
+  namespace: embodied-ai-benchmark
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: benchmark-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+
+---
+# Ingress for external access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: benchmark-ingress
+  namespace: embodied-ai-benchmark
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+spec:
+  tls:
+  - hosts:
+    - benchmark.example.com
+    secretName: benchmark-tls
+  rules:
+  - host: benchmark.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: benchmark-service
+            port:
+              number: 80
+
+---
+# PersistentVolumeClaim for data storage
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: benchmark-data-pvc
+  namespace: embodied-ai-benchmark
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: fast-ssd
+
+---
+# PersistentVolumeClaim for logs
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: benchmark-logs-pvc
+  namespace: embodied-ai-benchmark
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+
+---
+# Redis deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: embodied-ai-benchmark
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        args:
+        - redis-server
+        - --appendonly
+        - "yes"
+        - --maxmemory
+        - "1gb"
+        - --maxmemory-policy
+        - "allkeys-lru"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: redis-pvc
+
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: embodied-ai-benchmark
+spec:
+  selector:
+    app: redis
+  ports:
+  - port: 6379
+    targetPort: 6379
+  type: ClusterIP
+
+---
+# Redis PersistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: embodied-ai-benchmark
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: fast-ssd
+
+---
+# ServiceMonitor for Prometheus monitoring
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: benchmark-monitor
+  namespace: embodied-ai-benchmark
+  labels:
+    app: benchmark-app
+spec:
+  selector:
+    matchLabels:
+      app: benchmark-app
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+
+---
+# NetworkPolicy for security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: benchmark-network-policy
+  namespace: embodied-ai-benchmark
+spec:
+  podSelector:
+    matchLabels:
+      app: benchmark-app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - podSelector:
+        matchLabels:
+          app: benchmark-app
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80

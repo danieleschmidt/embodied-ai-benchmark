@@ -1,0 +1,94 @@
+{
+  "timestamp": 1755039554.2453418,
+  "deployment_readiness": {
+    "deployment_files": {
+      "required": 8,
+      "found": 8,
+      "missing": [],
+      "passed": true
+    },
+    "docker_config": {
+      "passed": true,
+      "checks": [
+        "Non-root user configured",
+        "Health check configured",
+        "Metadata labels present",
+        "Restart policy configured",
+        "Service health checks configured",
+        "Custom networks configured"
+      ],
+      "score": 6
+    },
+    "kubernetes_config": {
+      "passed": true,
+      "checks": [
+        "Namespace configured",
+        "ConfigMap configured",
+        "Secret configured",
+        "Deployment configured",
+        "Service configured",
+        "HorizontalPodAutoscaler configured",
+        "Ingress configured",
+        "PersistentVolumeClaim configured",
+        "Network policies configured",
+        "Resource limits configured"
+      ],
+      "score": 10
+    },
+    "security_config": {
+      "passed": true,
+      "checks": [
+        "Environment template provided",
+        "Environment files excluded from Docker",
+        "Kubernetes secrets configured",
+        "TLS configuration present",
+        "Security documentation provided",
+        "No sensitive files detected"
+      ],
+      "score": 6,
+      "exposed_files": []
+    },
+    "monitoring_config": {
+      "passed": true,
+      "checks": [
+        "Prometheus configured",
+        "Grafana configured",
+        "Health checks configured",
+        "Kubernetes liveness probes",
+        "Kubernetes readiness probes",
+        "Prometheus ServiceMonitor",
+        "Logging configuration",
+        "Monitoring documentation"
+      ],
+      "score": 8
+    },
+    "overall": {
+      "passed": true,
+      "score": 100.0,
+      "checks_passed": 5,
+      "total_checks": 5
+    },
+    "build_process": {
+      "passed": true,
+      "checks": [
+        "Dockerfile FROM directive",
+        "Dockerfile WORKDIR directive",
+        "Dockerfile COPY directive",
+        "Dockerfile RUN directive",
+        "Dockerfile CMD directive",
+        "Package configuration present"
+      ],
+      "score": 6
+    }
+  },
+  "recommendations": [],
+  "next_steps": [
+    "Build and tag Docker images",
+    "Push images to container registry",
+    "Update Kubernetes secrets with production values",
+    "Deploy to staging environment first",
+    "Run integration tests",
+    "Deploy to production",
+    "Verify monitoring and alerting"
+  ]
+}

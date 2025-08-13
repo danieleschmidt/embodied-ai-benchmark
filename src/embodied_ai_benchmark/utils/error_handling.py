@@ -788,3 +788,172 @@ def with_retry(max_attempts: int = 3,
 def get_error_handler() -> ErrorHandler:
     """Get the global error handler instance."""
     return global_error_handler
+
+
+@dataclass
+class ExecutionResult:
+    """Result from safe execution."""
+    success: bool
+    result: Any = None
+    error: Optional[Exception] = None
+    execution_time: float = 0.0
+    recovery_attempts: int = 0
+    
+    
+class SafeExecutor:
+    """Safe execution wrapper with error handling and recovery."""
+    
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        """Initialize safe executor.
+        
+        Args:
+            config: Configuration dictionary
+        """
+        self.config = config or {}
+        self.error_handler = get_error_handler()
+        self.max_retries = self.config.get('max_retries', 3)
+        self.retry_delay = self.config.get('retry_delay', 1.0)
+        
+    def execute_with_recovery(
+        self, 
+        func: Callable, 
+        *args, 
+        max_retries: Optional[int] = None,
+        timeout: Optional[float] = None,
+        **kwargs
+    ) -> ExecutionResult:
+        """Execute function with error handling and recovery.
+        
+        Args:
+            func: Function to execute
+            *args: Positional arguments
+            max_retries: Maximum retry attempts
+            timeout: Execution timeout
+            **kwargs: Keyword arguments
+            
+        Returns:
+            Execution result
+        """
+        max_retries = max_retries or self.max_retries
+        start_time = time.time()
+        last_exception = None
+        
+        for attempt in range(max_retries + 1):
+            try:
+                logger.debug(f"Executing {func.__name__}, attempt {attempt + 1}/{max_retries + 1}")
+                
+                # Execute with timeout if specified
+                if timeout:
+                    result = self._execute_with_timeout(func, timeout, *args, **kwargs)
+                else:
+                    result = func(*args, **kwargs)
+                
+                execution_time = time.time() - start_time
+                
+                return ExecutionResult(
+                    success=True,
+                    result=result,
+                    execution_time=execution_time,
+                    recovery_attempts=attempt
+                )
+                
+            except Exception as e:
+                last_exception = e
+                logger.warning(f"Execution attempt {attempt + 1} failed: {e}")
+                
+                # Don't retry on certain types of errors
+                if isinstance(e, (ValidationError, KeyboardInterrupt)):
+                    break
+                
+                # Sleep before retry (except on last attempt)
+                if attempt < max_retries:
+                    time.sleep(self.retry_delay * (attempt + 1))  # Exponential backoff
+        
+        execution_time = time.time() - start_time
+        
+        return ExecutionResult(
+            success=False,
+            error=last_exception,
+            execution_time=execution_time,
+            recovery_attempts=max_retries
+        )
+    
+    def _execute_with_timeout(
+        self, 
+        func: Callable, 
+        timeout: float, 
+        *args, 
+        **kwargs
+    ) -> Any:
+        """Execute function with timeout."""
+        import signal
+        
+        def timeout_handler(signum, frame):
+            raise TimeoutError(f"Function {func.__name__} timed out after {timeout} seconds")
+        
+        # Set up signal handler for timeout
+        old_handler = signal.signal(signal.SIGALRM, timeout_handler)
+        signal.alarm(int(timeout))
+        
+        try:
+            result = func(*args, **kwargs)
+            signal.alarm(0)  # Cancel alarm
+            return result
+        finally:
+            signal.signal(signal.SIGALRM, old_handler)
+
+
+class ErrorRecoveryManager:
+    """Manages error recovery strategies."""
+    
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        """Initialize error recovery manager.
+        
+        Args:
+            config: Configuration dictionary
+        """
+        self.config = config or {}
+        self.recovery_strategies = {}
+        self.error_handler = get_error_handler()
+        
+    def register_recovery_strategy(
+        self, 
+        error_type: Type[Exception], 
+        strategy: Callable[[Exception], Any]
+    ):
+        """Register recovery strategy for specific error type.
+        
+        Args:
+            error_type: Exception type to handle
+            strategy: Recovery function
+        """
+        self.recovery_strategies[error_type] = strategy
+        
+    def recover_from_error(self, error: Exception) -> Optional[Any]:
+        """Attempt to recover from error.
+        
+        Args:
+            error: Exception to recover from
+            
+        Returns:
+            Recovery result or None
+        """
+        error_type = type(error)
+        
+        # Try exact match first
+        if error_type in self.recovery_strategies:
+            strategy = self.recovery_strategies[error_type]
+            try:
+                return strategy(error)
+            except Exception as e:
+                logger.error(f"Recovery strategy failed: {e}")
+        
+        # Try base class matches
+        for registered_type, strategy in self.recovery_strategies.items():
+            if issubclass(error_type, registered_type):
+                try:
+                    return strategy(error)
+                except Exception as e:
+                    logger.error(f"Recovery strategy for {registered_type} failed: {e}")
+        
+        return None

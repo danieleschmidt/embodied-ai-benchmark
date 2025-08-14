@@ -1035,7 +1035,7 @@ class DocumentationGenerator:
             "",
             "**Issue**: High memory usage",
             "**Solution**: Check for memory leaks and optimize queries",
-        ])
+        ]
         
         return "\n".join(guide_lines)
     

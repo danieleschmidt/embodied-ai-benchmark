@@ -21,11 +21,11 @@ class OptimizationConfig:
     """Configuration for optimization settings."""
     enable_multiprocessing: bool = True
     enable_multithreading: bool = True
-    max_workers: int = mp.cpu_count()
+    max_workers: int = min(mp.cpu_count(), 8)  # Reasonable limit for resource usage
     batch_size: int = 32
     prefetch_size: int = 2
-    memory_limit_mb: int = 1024
-    enable_jit_compilation: bool = True
+    memory_limit_mb: int = 2048  # Increased for production workloads
+    enable_jit_compilation: bool = False  # Disabled by default for compatibility
     enable_vectorization: bool = True
     enable_caching: bool = True
 

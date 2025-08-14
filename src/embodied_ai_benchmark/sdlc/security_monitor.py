@@ -18,7 +18,7 @@ import json
 import re
 
 from ..utils.error_handling import ErrorHandler
-from ..utils.monitoring import MetricsCollector
+from .observability_engine import MetricsCollector
 
 
 class ThreatLevel(Enum):

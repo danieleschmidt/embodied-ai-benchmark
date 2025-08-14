@@ -25,7 +25,7 @@ from .doc_generator import DocumentationGenerator
 from .quality_assurance import QualityAssuranceEngine
 from .security_monitor import SecurityMonitoringSystem
 from ..utils.error_handling import ErrorHandler
-from ..utils.monitoring import MetricsCollector
+from .observability_engine import MetricsCollector
 from ..utils.caching import AdaptiveCache
 
 

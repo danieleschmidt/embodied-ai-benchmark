@@ -1,104 +1,249 @@
 {
+  "timestamp": 1755577761.2298849,
   "overall_passed": false,
-  "overall_score": 68.0,
-  "gates_passed": 3,
-  "total_gates": 5,
-  "critical_gates_passed": false,
-  "execution_time": 21.632602214813232,
-  "results": [
-    {
-      "gate_name": "Code Execution",
-      "passed": true,
-      "score": 100.0,
-      "details": {
-        "core_imports": "PASSED",
-        "agent_creation": "PASSED",
-        "basic_operations": "PASSED",
-        "critical_errors": 0
-      },
-      "execution_time": 0.5596988201141357
-    },
-    {
-      "gate_name": "Test Coverage",
+  "overall_score": 71.42857142857143,
+  "gates_passed": 5,
+  "gates_failed": 2,
+  "total_gates": 7,
+  "passed_gates": [
+    "performance",
+    "test_coverage",
+    "documentation",
+    "global_compliance",
+    "deployment_readiness"
+  ],
+  "failed_gates": [
+    "code_structure",
+    "security"
+  ],
+  "warnings": [],
+  "detailed_results": {
+    "code_structure": {
       "passed": false,
-      "score": 0.0,
-      "details": {
-        "error": "invalid literal for int() with base 10: ''"
-      },
-      "execution_time": 20.615084409713745
+      "score": 25.0,
+      "import_errors": [
+        "embodied_ai_benchmark: No module named 'numpy'",
+        "embodied_ai_benchmark.evaluation: No module named 'numpy'",
+        "embodied_ai_benchmark.tasks: No module named 'numpy'"
+      ],
+      "missing_files": [],
+      "warnings": 0
     },
-    {
-      "gate_name": "Security Scan",
+    "security": {
       "passed": false,
-      "score": 60.0,
-      "details": {
-        "security_score": 60.0,
-        "checks_passed": 3,
-        "total_checks": 5,
-        "secrets_found": 7,
-        "eval_usage": 2,
-        "checks": {
-          "no_hardcoded_secrets": false,
-          "no_eval_usage": false,
-          "safe_imports": true,
-          "input_validation": true,
-          "secure_defaults": true
+      "score": 40.0,
+      "checks": {
+        "input_validation": {
+          "passed": true,
+          "message": "Input validation in 76.0% of files",
+          "coverage": 75.96153846153845
+        },
+        "file_path_safety": {
+          "passed": false,
+          "message": "Found 8 potentially unsafe patterns",
+          "unsafe_patterns": [
+            "src/embodied_ai_benchmark/research/advanced_optimizations.py:eval(",
+            "src/embodied_ai_benchmark/research/quantum_curriculum.py:eval(",
+            "src/embodied_ai_benchmark/research/real_time_adaptive_physics.py:eval(",
+            "src/embodied_ai_benchmark/research/dynamic_attention_fusion.py:eval(",
+            "src/embodied_ai_benchmark/research/quantum_enhanced_planning.py:eval(",
+            "src/embodied_ai_benchmark/research/security_hardening.py:../",
+            "src/embodied_ai_benchmark/sdlc/doc_generator.py:eval(",
+            "src/embodied_ai_benchmark/utils/optimization.py:eval("
+          ]
+        },
+        "import_safety": {
+          "passed": true,
+          "message": "93.3% of files have safe imports",
+          "safety_rate": 93.26923076923077
+        },
+        "credential_exposure": {
+          "passed": false,
+          "message": "Found 10 potential credential exposures",
+          "exposures": [
+            "quality_gates_validation.py:314",
+            "quality_gates_validation.py:315",
+            "quality_gates_validation.py:316",
+            "quality_gates_validation.py:317",
+            "tests/test_security.py:281",
+            "tests/test_security.py:282",
+            "tests/test_security.py:283",
+            "src/embodied_ai_benchmark/database/connection.py:108",
+            "src/embodied_ai_benchmark/database/connection.py:328",
+            "src/embodied_ai_benchmark/sdlc/doc_generator.py:934"
+          ]
+        },
+        "dangerous_operations": {
+          "passed": false,
+          "message": "Found 46 potentially dangerous operations",
+          "dangerous_ops": [
+            "comprehensive_validation.py:format(",
+            "quality_gates_validation.py:rm -rf",
+            "quality_gates_validation.py:format(",
+            "quality_gates_validation.py:delete *",
+            "quality_gates_validation.py:DROP TABLE",
+            "quality_gates_validation.py:sudo ",
+            "tests/factories.py:format(",
+            "src/embodied_ai_benchmark/cache/cache_manager.py:format(",
+            "src/embodied_ai_benchmark/core/base_task.py:format(",
+            "src/embodied_ai_benchmark/curriculum/emergent_curriculum.py:format(",
+            "src/embodied_ai_benchmark/curriculum/llm_curriculum.py:format(",
+            "src/embodied_ai_benchmark/evaluation/benchmark_suite.py:format(",
+            "src/embodied_ai_benchmark/evaluation/cross_simulator_benchmark.py:format(",
+            "src/embodied_ai_benchmark/evaluation/long_horizon_benchmark.py:format(",
+            "src/embodied_ai_benchmark/multiagent/coordination_protocols.py:format(",
+            "src/embodied_ai_benchmark/physics/adaptive_physics.py:format(",
+            "src/embodied_ai_benchmark/repositories/base_repository.py:format(",
+            "src/embodied_ai_benchmark/repositories/experiment_repository.py:format(",
+            "src/embodied_ai_benchmark/research/quantum_enhanced_planning.py:format(",
+            "src/embodied_ai_benchmark/research/security_hardening.py:format(",
+            "src/embodied_ai_benchmark/research/security_hardening.py:DROP TABLE",
+            "src/embodied_ai_benchmark/sdlc/autonomous_orchestrator.py:format(",
+            "src/embodied_ai_benchmark/sdlc/autonomous_resilience_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/autonomous_testing_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/code_generator.py:format(",
+            "src/embodied_ai_benchmark/sdlc/observability_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/project_orchestrator.py:format(",
+            "src/embodied_ai_benchmark/sdlc/quality_assurance.py:rm -rf",
+            "src/embodied_ai_benchmark/sdlc/quality_assurance.py:format(",
+            "src/embodied_ai_benchmark/sdlc/quality_assurance.py:DROP TABLE",
+            "src/embodied_ai_benchmark/sdlc/quantum_orchestration_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/requirements_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/security_hardening_engine.py:format(",
+            "src/embodied_ai_benchmark/sdlc/security_monitor.py:format(",
+            "src/embodied_ai_benchmark/utils/advanced_caching.py:format(",
+            "src/embodied_ai_benchmark/utils/advanced_compliance.py:format(",
+            "src/embodied_ai_benchmark/utils/auto_scaling.py:format(",
+            "src/embodied_ai_benchmark/utils/benchmark_metrics.py:format(",
+            "src/embodied_ai_benchmark/utils/compliance.py:format(",
+            "src/embodied_ai_benchmark/utils/distributed_execution.py:format(",
+            "src/embodied_ai_benchmark/utils/error_handling.py:format(",
+            "src/embodied_ai_benchmark/utils/global_deployment.py:format(",
+            "src/embodied_ai_benchmark/utils/i18n.py:format(",
+            "src/embodied_ai_benchmark/utils/logging_config.py:format(",
+            "src/embodied_ai_benchmark/utils/monitoring.py:format(",
+            "src/embodied_ai_benchmark/database/migrations/001_create_tables.py:DROP TABLE"
+          ]
         }
-      },
-      "execution_time": 0.03546929359436035
+      }
     },
-    {
-      "gate_name": "Performance Benchmarks",
+    "performance": {
       "passed": true,
-      "score": 100.0,
-      "details": {
-        "performance_score": 100.0,
-        "metrics": {
-          "response_time_ms": 0.06771087646484375,
-          "memory_usage_mb": 98.69921875,
-          "throughput_ops_sec": 4462025.531914894,
-          "concurrent_agents": 4
-        },
-        "thresholds": {
-          "max_response_time_ms": 1000.0,
-          "max_memory_mb": 500.0,
-          "min_throughput_ops_sec": 10.0,
-          "min_concurrent_agents": 2
-        },
-        "checks": {
-          "response_time": true,
-          "memory_usage": true,
-          "throughput": true,
-          "concurrency": true
-        },
-        "checks_passed": 4,
-        "total_checks": 4
-      },
-      "execution_time": 0.0007066726684570312
+      "score": 100,
+      "checks": [
+        "\u2705 Gen1 success rate: 40.0%",
+        "\u2705 Gen2 robustness: 100.0%",
+        "\u2705 Cache hit rate: 100.0%",
+        "\u2705 Concurrent execution implemented"
+      ],
+      "performance_data_files": 3
     },
-    {
-      "gate_name": "Documentation",
+    "test_coverage": {
       "passed": true,
       "score": 80.0,
-      "details": {
-        "documentation_score": 80.0,
-        "checks": {
-          "readme_exists": true,
-          "api_docs": false,
-          "examples": true,
-          "installation_guide": true,
-          "roadmap": true
-        },
-        "checks_passed": 4,
-        "total_checks": 5,
-        "doc_files_found": 0
+      "test_files": 22,
+      "source_files": 104,
+      "coverage_percentage": 100.0,
+      "config_files": 1
+    },
+    "documentation": {
+      "passed": true,
+      "score": 120,
+      "documentation_files": {
+        "README.md": "\u2705 Complete",
+        "ARCHITECTURE.md": "\u2705 Complete",
+        "CHANGELOG.md": "\u2705 Complete",
+        "CONTRIBUTING.md": "\u2705 Complete",
+        "LICENSE": "\u2705 Complete"
       },
-      "execution_time": 0.41831016540527344
+      "inline_documentation_percentage": 100.0
+    },
+    "global_compliance": {
+      "passed": true,
+      "score": 100.0,
+      "checks": {
+        "i18n_support": {
+          "passed": true,
+          "message": "I18n support: 3 locale files, code patterns: True",
+          "locale_files": 3,
+          "code_patterns": true
+        },
+        "gdpr_compliance": {
+          "passed": true,
+          "message": "Privacy indicators in 22 files, docs: False",
+          "privacy_mentions": 22,
+          "privacy_docs": false
+        },
+        "accessibility": {
+          "passed": true,
+          "message": "Accessibility indicators in 5 files",
+          "mentions": 5
+        },
+        "cross_platform": {
+          "passed": true,
+          "message": "Platform support in config: False, code patterns: True",
+          "config_support": false,
+          "code_patterns": true
+        },
+        "license_compliance": {
+          "passed": true,
+          "message": "License file: True, headers: 10.0%",
+          "license_file": true,
+          "header_coverage": 10.0
+        }
+      }
+    },
+    "deployment_readiness": {
+      "passed": true,
+      "score": 80.0,
+      "checks": {
+        "package_configuration": {
+          "passed": true,
+          "message": "Package config: 5/5 required fields",
+          "details": {
+            "required_fields": [
+              "name",
+              "version",
+              "description",
+              "authors",
+              "dependencies"
+            ],
+            "found_fields": 5
+          }
+        },
+        "docker_support": {
+          "passed": true,
+          "message": "Docker files: ['Dockerfile', 'docker-compose.yml', '.dockerignore']",
+          "docker_files": [
+            "Dockerfile",
+            "docker-compose.yml",
+            ".dockerignore"
+          ]
+        },
+        "ci_cd_configuration": {
+          "passed": false,
+          "message": "CI/CD configs: []",
+          "cicd_configs": []
+        },
+        "environment_configuration": {
+          "passed": true,
+          "message": "Env config files: ['.env.example'], code usage: True",
+          "config_files": [
+            ".env.example"
+          ],
+          "code_usage": true
+        },
+        "production_settings": {
+          "passed": true,
+          "message": "Production configs: 9 files, code patterns: True",
+          "config_files": 9,
+          "code_patterns": true
+        }
+      }
     }
-  ],
-  "timestamp": "2025-08-16 05:21:34",
+  },
   "recommendations": [
-    "Increase test coverage by adding more unit and integration tests",
-    "Address security vulnerabilities found in code"
+    "Improve code organization and fix import issues",
+    "Address security vulnerabilities and add input validation"
   ]
 }

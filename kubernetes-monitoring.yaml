@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  prometheus.yml: "\nglobal:\n  scrape_interval: 15s\nscrape_configs:\n  - job_name:\
+    \ 'embodied-ai-benchmark'\n    kubernetes_sd_configs:\n      - role: pod\n   \
+    \ relabel_configs:\n      - source_labels: [__meta_kubernetes_pod_label_app]\n\
+    \        action: keep\n        regex: embodied-ai-benchmark\n"
+kind: ConfigMap
+metadata:
+  name: prometheus-config

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-12-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "containerName": {
+      "type": "string",
+      "defaultValue": "embodied-ai-benchmark"
+    },
+    "image": {
+      "type": "string",
+      "defaultValue": "embodiedai.azurecr.io/benchmark:latest"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters(\"containerName\")]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "containers": [
+          {
+            "name": "embodied-ai-benchmark",
+            "properties": {
+              "image": "[parameters(\"image\")]",
+              "ports": [
+                {
+                  "port": 8000
+                }
+              ],
+              "environmentVariables": [
+                {
+                  "name": "ENVIRONMENT",
+                  "value": "production"
+                }
+              ],
+              "resources": {
+                "requests": {
+                  "cpu": 2,
+                  "memoryInGB": 4
+                }
+              }
+            }
+          }
+        ],
+        "osType": "Linux",
+        "ipAddress": {
+          "type": "Public",
+          "ports": [
+            {
+              "port": 8000,
+              "protocol": "TCP"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

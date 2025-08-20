@@ -1,0 +1,46 @@
+{
+  "timestamp": "2025-08-20T13:02:33.801547",
+  "framework_version": "1.0.0",
+  "deployment_targets": {
+    "docker_configuration": {
+      "dockerfile_created": true,
+      "docker_compose_created": true,
+      "optimized_build": true
+    },
+    "kubernetes_configuration": {
+      "deployment_created": true,
+      "service_created": true,
+      "ingress_created": true,
+      "monitoring_created": true
+    },
+    "cloud_configurations": {
+      "aws_config": true,
+      "gcp_config": true,
+      "azure_config": true
+    },
+    "monitoring_setup": {
+      "prometheus_config": true,
+      "grafana_config": true,
+      "alerting_config": true,
+      "logging_config": true
+    },
+    "deployment_scripts": {
+      "deploy_script": true,
+      "rollback_script": true,
+      "health_check": true,
+      "backup_script": true
+    },
+    "security_configurations": {
+      "network_policies": true,
+      "rbac_config": true,
+      "secrets_config": true,
+      "security_scanning": true
+    }
+  },
+  "infrastructure_configs": {},
+  "monitoring_setup": {},
+  "security_configs": {},
+  "backup_strategies": {},
+  "deployment_ready": true,
+  "deployment_score": 100.0
+}

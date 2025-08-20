@@ -1,0 +1,20 @@
+groups:
+- name: embodied-ai-benchmark.rules
+  rules:
+  - alert: HighErrorRate
+    annotations:
+      description: Error rate is {{ $value }} errors per second
+      summary: High error rate detected
+    expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+    for: 5m
+    labels:
+      severity: critical
+  - alert: HighResponseTime
+    annotations:
+      description: 95th percentile response time is {{ $value }}s
+      summary: High response time detected
+    expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
+      > 1.0
+    for: 10m
+    labels:
+      severity: warning

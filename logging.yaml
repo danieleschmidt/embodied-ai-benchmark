@@ -1,0 +1,31 @@
+disable_existing_loggers: false
+formatters:
+  json:
+    class: pythonjsonlogger.jsonlogger.JsonFormatter
+    format: '%(asctime)s %(name)s %(levelname)s %(message)s'
+  standard:
+    format: '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+handlers:
+  default:
+    class: logging.StreamHandler
+    formatter: json
+    level: INFO
+  file:
+    backupCount: 5
+    class: logging.handlers.RotatingFileHandler
+    filename: /app/logs/benchmark.log
+    formatter: json
+    level: INFO
+    maxBytes: 10485760
+loggers:
+  embodied_ai_benchmark:
+    handlers:
+    - default
+    - file
+    level: INFO
+    propagate: false
+root:
+  handlers:
+  - default
+  level: INFO
+version: 1

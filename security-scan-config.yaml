@@ -1,0 +1,22 @@
+compliance_scanning:
+  enabled: true
+  frameworks:
+  - CIS
+  - NIST
+  schedule: 0 3 * * 0
+image_scanning:
+  enabled: true
+  fail_on:
+  - HIGH
+  - CRITICAL
+  scanners:
+  - trivy
+  - clair
+  schedule: 0 2 * * *
+runtime_security:
+  enabled: true
+  rules:
+  - suspicious_activity
+  - privilege_escalation
+  tools:
+  - falco

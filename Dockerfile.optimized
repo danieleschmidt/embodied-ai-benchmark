@@ -1,0 +1,14 @@
+# Multi-stage optimized Dockerfile
+FROM python:3.11-slim as builder
+WORKDIR /build
+COPY pyproject.toml .
+RUN pip install --user --no-cache-dir -e .
+
+FROM python:3.11-slim as production
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+WORKDIR /app
+COPY src/ src/
+COPY --from=builder /build .
+HEALTHCHECK --interval=30s CMD python -c "import embodied_ai_benchmark"
+CMD ["python", "-m", "embodied_ai_benchmark.api.app"]

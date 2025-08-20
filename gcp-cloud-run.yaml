@@ -1,0 +1,33 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/execution-environment: gen2
+    run.googleapis.com/ingress: all
+  name: embodied-ai-benchmark
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '10'
+        run.googleapis.com/cpu: '2'
+        run.googleapis.com/cpu-throttling: 'false'
+        run.googleapis.com/memory: 4Gi
+    spec:
+      containerConcurrency: 100
+      containers:
+      - env:
+        - name: ENVIRONMENT
+          value: production
+        - name: GCP_PROJECT
+          value: PROJECT_ID
+        image: gcr.io/PROJECT_ID/embodied-ai-benchmark:latest
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: '2'
+            memory: 4Gi
+  traffic:
+  - latestRevision: true
+    percent: 100

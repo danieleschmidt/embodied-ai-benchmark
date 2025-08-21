@@ -1,74 +1,13 @@
 {
-  "num_episodes": 7,
-  "total_time": 0.002554178237915039,
-  "avg_episode_time": 0.00036488260541643413,
-  "success_rate": 0.7142857142857143,
-  "avg_steps": 20.714285714285715,
-  "avg_reward": 1.1533891795142686,
-  "total_validation_errors": 0,
-  "total_recovery_actions": 0,
-  "error_rate": 0.0,
-  "episodes": [
-    {
-      "episode_id": 2,
-      "total_steps": 7,
-      "total_reward": 1.3833441258432768,
-      "success": true,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    },
-    {
-      "episode_id": 3,
-      "total_steps": 20,
-      "total_reward": 5.376698374192455,
-      "success": true,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    },
-    {
-      "episode_id": 4,
-      "total_steps": 26,
-      "total_reward": 4.393372834722739,
-      "success": true,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    },
-    {
-      "episode_id": 5,
-      "total_steps": 30,
-      "total_reward": -4.384140194811593,
-      "success": false,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    },
-    {
-      "episode_id": 6,
-      "total_steps": 30,
-      "total_reward": 2.253917427291911,
-      "success": true,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    },
-    {
-      "episode_id": 7,
-      "total_steps": 5,
-      "total_reward": 0.33034296143775843,
-      "success": true,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    },
-    {
-      "episode_id": 9,
-      "total_steps": 27,
-      "total_reward": -1.2798112720766681,
-      "success": false,
-      "validation_errors": 0,
-      "recovery_actions": 0
-    }
-  ],
-  "successful_episodes": 7,
-  "failed_episodes": 3,
-  "success_percentage": 70.0,
-  "robustness_score": 1.0,
-  "evaluation_id": "robust_robust_test_agent_1755038952"
+  "generation": 2,
+  "focus": "Robustness and Reliability",
+  "tests_passed": 7,
+  "tests_total": 9,
+  "success_rate": 0.7777777777777778,
+  "timestamp": 1755777739.179743,
+  "recommendations": [
+    "Enhance error handling coverage",
+    "Strengthen security measures",
+    "Improve monitoring capabilities"
+  ]
 }

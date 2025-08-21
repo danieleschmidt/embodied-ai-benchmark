@@ -1,44 +1,11 @@
 {
-  "timestamp": "2025-08-20T13:00:08.854125",
-  "framework_version": "1.0.0",
   "quality_gates": {
-    "code_quality": {
-      "structure_analysis": true,
-      "import_validation": true,
-      "docstring_coverage": true,
-      "complexity_analysis": true,
-      "style_consistency": true
-    },
-    "security_measures": {
-      "input_sanitization": true,
-      "secret_management": true,
-      "access_control": false,
-      "vulnerability_scan": true,
-      "secure_communication": false
-    },
-    "performance_benchmarks": {
-      "startup_time": true,
-      "memory_efficiency": true,
-      "computation_speed": true,
-      "scalability_test": true
-    },
-    "compliance_standards": {
-      "licensing": true,
-      "documentation": true,
-      "version_control": true,
-      "dependency_management": true,
-      "configuration_management": true
-    },
-    "research_integrity": {
-      "reproducibility": true,
-      "benchmark_validity": true,
-      "experimental_design": true,
-      "statistical_rigor": false
-    }
+    "passed": 6,
+    "total": 7,
+    "success_rate": 0.8571428571428571
   },
-  "security_validation": {},
-  "performance_benchmarks": {},
-  "compliance_checks": {},
-  "overall_quality_score": 86.25,
-  "production_readiness": true
+  "execution_time": 0.019372224807739258,
+  "timestamp": 1755777858.388202,
+  "status": "PASSED",
+  "recommendations": []
 }

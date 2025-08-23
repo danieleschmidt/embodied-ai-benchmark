@@ -1,0 +1,26 @@
+{
+  "validation_type": "Generation 1 - Simple Validation",
+  "timestamp": "2025-08-23T12:42:21.942939",
+  "duration": "0.02s",
+  "tests_passed": "0/4",
+  "success_rate": "0.0%",
+  "overall_status": "PARTIAL",
+  "test_results": {
+    "imports": {
+      "success": false,
+      "message": "Import failed: No module named 'numpy'"
+    },
+    "basic_functionality": {
+      "success": false,
+      "message": "Basic functionality failed: 'MockNp' object has no attribute 'ndarray'"
+    },
+    "llm_integration": {
+      "success": false,
+      "message": "LLM integration failed: 'MockNp' object has no attribute 'ndarray'"
+    },
+    "database_integration": {
+      "success": false,
+      "message": "Database integration failed: 'MockNp' object has no attribute 'ndarray'"
+    }
+  }
+}

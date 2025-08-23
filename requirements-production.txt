@@ -1,0 +1,42 @@
+# Production requirements for Embodied AI Benchmark++
+# Core dependencies
+numpy>=1.21.0
+gym>=0.21.0
+torch>=1.11.0
+transformers>=4.20.0
+opencv-python>=4.5.0
+pyyaml>=6.0
+matplotlib>=3.5.0
+tqdm>=4.64.0
+
+# Database
+psycopg2-binary>=2.9.0
+pymongo>=4.0.0
+
+# API and web
+requests>=2.28.0
+flask>=2.2.0
+gunicorn>=20.0.0
+
+# Monitoring and observability
+prometheus-client>=0.14.0
+structlog>=22.0.0
+
+# Security
+cryptography>=37.0.0
+bcrypt>=3.2.0
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.8.0
+pytest-asyncio>=0.19.0
+black>=22.0.0
+isort>=5.10.0
+flake8>=5.0.0
+mypy>=0.991
+
+# Optional simulator dependencies
+# habitat-sim>=0.3.0  # Uncomment when available
+# mani-skill>=0.5.0   # Uncomment when available
+# sapien>=2.0.0       # Uncomment when available

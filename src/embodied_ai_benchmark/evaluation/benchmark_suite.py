@@ -81,6 +81,15 @@ class BenchmarkSuite:
         """
         return self.metrics.copy()
     
+    @property
+    def available_tasks(self) -> List[str]:
+        """Get list of available task names.
+        
+        Returns:
+            List of available task names
+        """
+        return list(self.tasks.keys())
+    
     def evaluate(self, 
                  env: BaseEnv,
                  agent: BaseAgent,

@@ -1,0 +1,44 @@
+{
+  "generation": 3,
+  "timestamp": "2025-08-24T13:54:10.199741",
+  "summary": {
+    "total_tests": 8,
+    "passed_tests": 7,
+    "failed_tests": 1,
+    "success_rate": 0.875
+  },
+  "test_results": {
+    "Basic Optimization": {
+      "status": "PASS",
+      "message": "Basic optimization working: 2 workers, 16 batch size"
+    },
+    "Concurrent Execution": {
+      "status": "PASS",
+      "message": "Concurrent execution ready: 2 workers, 30.0s timeout"
+    },
+    "Caching System": {
+      "status": "PASS",
+      "message": "Caching system working: 10.3x speedup from caching"
+    },
+    "Memory Management": {
+      "status": "PASS",
+      "message": "Memory management working: 0.0MB allocated, 0.0MB freed"
+    },
+    "Monitoring Optimization": {
+      "status": "PASS",
+      "message": "Monitoring optimization working: 0 metrics collected"
+    },
+    "Async Performance": {
+      "status": "PASS",
+      "message": "Async performance working: 10 tasks, 945.2 tasks/sec"
+    },
+    "Scalability Features": {
+      "status": "PASS",
+      "message": "Scalability working: 4.0x worker scaling, 4.0x batch scaling, 2048MB limit"
+    },
+    "Global Optimization": {
+      "status": "FAIL",
+      "message": "Global optimization test failed: cannot import name 'CrossPlatformManager' from 'embodied_ai_benchmark.utils.cross_platform' (/root/repo/src/embodied_ai_benchmark/utils/cross_platform.py)"
+    }
+  }
+}

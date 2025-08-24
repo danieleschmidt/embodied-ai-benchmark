@@ -1,70 +1,32 @@
 {
-  "num_episodes": 10,
-  "total_time": 0.0011522769927978516,
-  "avg_episode_time": 0.00011522769927978516,
-  "success_rate": 0.4,
-  "avg_steps": 19.7,
-  "avg_reward": -0.1652146432782914,
-  "episodes": [
-    {
-      "episode_id": 0,
-      "total_steps": 7,
-      "total_reward": -1.182261449844709,
-      "success": false
+  "generation": 1,
+  "timestamp": "2025-08-24T13:45:42.967241",
+  "summary": {
+    "total_tests": 5,
+    "passed_tests": 5,
+    "failed_tests": 0,
+    "success_rate": 1.0
+  },
+  "test_results": {
+    "Core Imports": {
+      "status": "PASS",
+      "message": "Core imports successful"
     },
-    {
-      "episode_id": 1,
-      "total_steps": 23,
-      "total_reward": -0.48934931818409333,
-      "success": false
+    "Agent Creation": {
+      "status": "PASS",
+      "message": "Created agents: test_random, test_scripted"
     },
-    {
-      "episode_id": 2,
-      "total_steps": 50,
-      "total_reward": -3.9851271784084545,
-      "success": false
+    "BenchmarkSuite": {
+      "status": "PASS",
+      "message": "BenchmarkSuite created with 0 available tasks"
     },
-    {
-      "episode_id": 3,
-      "total_steps": 11,
-      "total_reward": 0.688497208395253,
-      "success": true
+    "MultiAgent": {
+      "status": "PASS",
+      "message": "MultiAgentBenchmark created successfully"
     },
-    {
-      "episode_id": 4,
-      "total_steps": 24,
-      "total_reward": -0.2122041349280286,
-      "success": false
-    },
-    {
-      "episode_id": 5,
-      "total_steps": 5,
-      "total_reward": 1.4485883286895775,
-      "success": true
-    },
-    {
-      "episode_id": 6,
-      "total_steps": 48,
-      "total_reward": 3.5973154776673653,
-      "success": true
-    },
-    {
-      "episode_id": 7,
-      "total_steps": 11,
-      "total_reward": 1.9829775444296305,
-      "success": true
-    },
-    {
-      "episode_id": 8,
-      "total_steps": 14,
-      "total_reward": -2.1263450390953746,
-      "success": false
-    },
-    {
-      "episode_id": 9,
-      "total_steps": 4,
-      "total_reward": -1.3742378715040802,
-      "success": false
+    "Agent Actions": {
+      "status": "PASS",
+      "message": "Generated 3 actions successfully"
     }
-  ]
+  }
 }

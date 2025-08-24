@@ -297,6 +297,28 @@ class PerformanceMonitor:
         """Clear all stored alerts."""
         self.alerts.clear()
         logger.info("Performance alerts cleared")
+    
+    def get_metrics(self) -> Dict[str, Any]:
+        """Get comprehensive performance metrics summary.
+        
+        Returns:
+            Dictionary containing system and benchmark metrics
+        """
+        system_summary = self.get_system_summary()
+        benchmark_summary = self.get_benchmark_summary()
+        recent_alerts = self.get_recent_alerts()
+        
+        return {
+            "timestamp": datetime.now().isoformat(),
+            "monitoring_active": self._monitoring_active,
+            "system": system_summary,
+            "benchmark": benchmark_summary,
+            "alerts": recent_alerts,
+            "metrics_count": {
+                "system": len(self.system_metrics_history),
+                "benchmark": len(self.benchmark_metrics_history)
+            }
+        }
 
 
 class HealthChecker:

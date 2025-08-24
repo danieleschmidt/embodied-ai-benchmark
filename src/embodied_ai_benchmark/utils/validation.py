@@ -64,6 +64,36 @@ class InputValidator:
         return validated_config
     
     @staticmethod
+    def validate_agent_config(config: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate agent configuration.
+        
+        Args:
+            config: Agent configuration dictionary
+            
+        Returns:
+            Validated configuration
+            
+        Raises:
+            ValidationError: If configuration is invalid
+        """
+        if not isinstance(config, dict):
+            raise ValidationError(f"Configuration must be a dictionary, got {type(config)}")
+        
+        # Check required fields
+        if not config.get("agent_id"):
+            raise ValidationError("agent_id is required and cannot be empty")
+        
+        if "action_space" not in config or config["action_space"] is None:
+            raise ValidationError("action_space is required")
+        
+        # Validate action_space structure
+        action_space = config["action_space"]
+        if not isinstance(action_space, dict):
+            raise ValidationError("action_space must be a dictionary")
+        
+        return config
+    
+    @staticmethod
     def validate_action(action: Dict[str, Any], action_space: Dict[str, Any]) -> Dict[str, Any]:
         """Validate agent action against action space.
         

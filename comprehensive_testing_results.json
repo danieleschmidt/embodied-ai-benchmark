@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-20T12:58:37.872910",
+  "timestamp": "2025-08-24T13:55:45.765156",
   "framework_version": "1.0.0",
   "test_categories": {
     "core_framework": {
@@ -16,7 +16,7 @@
       "multi_agent_benchmark": false
     },
     "research_components": {
-      "quantum_planning": true,
+      "quantum_planning": false,
       "meta_learning": false,
       "emergent_communication": false,
       "neural_physics": false,
@@ -62,8 +62,8 @@
     },
     "research_components": {
       "total_tests": 5,
-      "passed_tests": 1,
-      "coverage_percentage": 20.0
+      "passed_tests": 0,
+      "coverage_percentage": 0.0
     },
     "performance_systems": {
       "total_tests": 5,
@@ -87,11 +87,11 @@
     },
     "overall": {
       "total_tests": 32,
-      "passed_tests": 10,
-      "coverage_percentage": 31.25
+      "passed_tests": 9,
+      "coverage_percentage": 28.125
     }
   },
   "performance_tests": {},
   "integration_tests": {},
-  "overall_score": 31.25
+  "overall_score": 28.125
 }

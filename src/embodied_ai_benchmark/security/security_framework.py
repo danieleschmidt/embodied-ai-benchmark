@@ -128,7 +128,7 @@ class SecurityFramework:
         
         # Register default rules
         self.register_validation_rule("string", ValidationRule(
-            "string", validate_string(), sanitizer=self._sanitize_string
+            "string", validate_string, sanitizer=self._sanitize_string
         ))
         
         self.register_validation_rule("email", ValidationRule(
@@ -136,11 +136,11 @@ class SecurityFramework:
         ))
         
         self.register_validation_rule("number", ValidationRule(
-            "number", validate_number()
+            "number", validate_number
         ))
         
         self.register_validation_rule("array", ValidationRule(
-            "array", validate_array()
+            "array", validate_array
         ))
     
     def register_validation_rule(self, name: str, rule: ValidationRule):

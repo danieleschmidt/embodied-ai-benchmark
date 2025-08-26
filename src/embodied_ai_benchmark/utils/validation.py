@@ -60,6 +60,9 @@ class InputValidator:
                             )
                     else:
                         validated_config[key] = value
+                else:
+                    # Missing required key
+                    raise ValidationError(f"Missing required configuration key: '{key}'")
         
         return validated_config
     
@@ -420,3 +423,98 @@ class SecurityValidator:
             raise ValidationError(f"GPU memory usage too high: {gpu_memory_mb}MB")
         
         return True
+    
+    @staticmethod
+    def validate_input(data: Any, input_type: str = "general") -> bool:
+        """Validate input data for security issues.
+        
+        Args:
+            data: Input data to validate
+            input_type: Type of input for specific validation rules
+            
+        Returns:
+            True if input is safe
+            
+        Raises:
+            ValidationError: If input contains security risks
+        """
+        if data is None:
+            return True
+        
+        # Check for common injection patterns
+        if isinstance(data, str):
+            dangerous_patterns = [
+                "<script", "javascript:", "eval(", "exec(", 
+                "import os", "import sys", "__import__",
+                "subprocess", "system("
+            ]
+            
+            data_lower = data.lower()
+            for pattern in dangerous_patterns:
+                if pattern in data_lower:
+                    raise ValidationError(f"Potentially dangerous input pattern detected: {pattern}")
+        
+        # Check data size limits
+        if hasattr(data, '__len__'):
+            if len(str(data)) > 10000:  # 10KB limit for string representations
+                raise ValidationError("Input data too large")
+        
+        # Validate specific input types
+        if input_type == "config":
+            if not isinstance(data, (dict, str, int, float, bool, type(None))):
+                raise ValidationError(f"Invalid config data type: {type(data)}")
+        
+        elif input_type == "file_path":
+            if isinstance(data, (str, Path)):
+                path = str(data)
+                # Check for path traversal attacks
+                if ".." in path or path.startswith("/"):
+                    if not path.startswith(("/tmp", "/var/tmp")):
+                        raise ValidationError("Potentially dangerous file path")
+        
+        elif input_type == "numeric":
+            if isinstance(data, (int, float)):
+                if abs(data) > 1e10:  # Prevent extreme values
+                    raise ValidationError("Numeric value too large")
+        
+        return True
+    
+    @staticmethod
+    def sanitize_output(data: Any) -> Any:
+        """Sanitize output data to prevent information leakage.
+        
+        Args:
+            data: Data to sanitize
+            
+        Returns:
+            Sanitized data
+        """
+        if isinstance(data, dict):
+            # Remove sensitive keys
+            sensitive_keys = {
+                "password", "secret", "key", "token", "api_key",
+                "private_key", "auth", "credential"
+            }
+            
+            sanitized = {}
+            for k, v in data.items():
+                key_lower = str(k).lower()
+                if any(sensitive in key_lower for sensitive in sensitive_keys):
+                    sanitized[k] = "[REDACTED]"
+                else:
+                    sanitized[k] = SecurityValidator.sanitize_output(v)
+            return sanitized
+        
+        elif isinstance(data, (list, tuple)):
+            return type(data)(SecurityValidator.sanitize_output(item) for item in data)
+        
+        elif isinstance(data, str):
+            # Remove potential sensitive data patterns
+            import re
+            # Credit card pattern
+            data = re.sub(r'\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b', '[CARD-REDACTED]', data)
+            # Email pattern (partial redaction)
+            data = re.sub(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', '[EMAIL-REDACTED]', data)
+            return data
+        
+        return data

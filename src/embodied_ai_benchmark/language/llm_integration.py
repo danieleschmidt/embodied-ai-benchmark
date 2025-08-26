@@ -295,7 +295,7 @@ class LLMIntegration:
         failures = [r for r in results if not r.get("success", False)]
         failure_reasons = [f.get("failure_reason", "unknown") for f in failures]
         
-        prompt = f\"\"\"Analyze the following agent performance data and provide structured insights:
+        prompt = f"""Analyze the following agent performance data and provide structured insights:
 
 **Performance Summary:**
 - Success Rate: {success_rate:.2%} ({sum(success_rates)}/{len(success_rates)} episodes)
@@ -322,14 +322,14 @@ Please provide analysis in the following JSON format:
   "confidence": 0.85
 }}
 
-Focus on actionable insights for curriculum adaptation.\"\"\"
+Focus on actionable insights for curriculum adaptation."""
         
         return prompt
     
     def _build_task_generation_prompt(self, base_task: Dict[str, Any], difficulty_target: float) -> str:
         """Build task generation prompt."""
         
-        prompt = f\"\"\"Generate a task variation based on the following parameters:
+        prompt = f"""Generate a task variation based on the following parameters:
 
 **Base Task:**
 {json.dumps(base_task, indent=2)}
@@ -356,14 +356,14 @@ Provide response in JSON format:
   }}
 }}
 
-Focus on creating engaging, learnable challenges.\"\"\"
+Focus on creating engaging, learnable challenges."""
         
         return prompt
     
     def _build_task_parsing_prompt(self, description: str) -> str:
         """Build task parsing prompt."""
         
-        prompt = f\"\"\"Parse the following natural language task description into executable format:
+        prompt = f"""Parse the following natural language task description into executable format:
 
 **Task Description:**
 {description}
@@ -389,7 +389,7 @@ Convert this into a structured task specification:
   "safety_considerations": ["safety note1", "safety note2"]
 }}
 
-Be precise and comprehensive in the specification.\"\"\"
+Be precise and comprehensive in the specification."""
         
         return prompt
     

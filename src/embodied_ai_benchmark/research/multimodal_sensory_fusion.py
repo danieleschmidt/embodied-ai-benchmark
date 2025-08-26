@@ -711,7 +711,7 @@ class MultiModalSensoryFusion:
                 modality_contributions={},
                 uncertainty_estimate=1.0,
                 cross_modal_alignments={},
-                reasoning_trace=[\"No modalities available for fusion\"],
+                reasoning_trace=["No modalities available for fusion"],
                 confidence_score=0.0
             )
         

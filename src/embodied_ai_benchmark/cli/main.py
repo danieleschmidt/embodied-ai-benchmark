@@ -12,7 +12,7 @@ from ..core.base_agent import RandomAgent
 from ..evaluation.benchmark_suite import BenchmarkSuite
 from ..multiagent.multi_agent_benchmark import MultiAgentBenchmark
 from ..database.connection import get_database
-from ..database.migrations.001_create_tables import run_migration
+from ..database.migrations import run_migration
 from ..database.seeds.task_seed import run_seeds
 from ..repositories.experiment_repository import ExperimentRepository, BenchmarkRunRepository
 

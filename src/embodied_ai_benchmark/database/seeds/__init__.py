@@ -1,1 +1,0 @@
-"""Database seed data for initial setup."""
